@@ -18,6 +18,11 @@ def select_parents(population: list[ScoredProgram], level: Level) -> list[Scored
 
 def search(level: Level) -> ScoredProgram:
     """Returns the best-scoring program ever seen."""
+    return min(search_population(level), key=lambda program: program.score)
+
+
+def search_population(level: Level) -> list[ScoredProgram]:
+    """Returns every program the search scored, not just the winner. Handy for asking "how close did the right answer get?"."""
     blank: ScoredProgram = evaluate(Proposal('', [{} for _ in level.demos]), level)
     population: list[ScoredProgram] = [blank]
     tried_sources: set[str] = {blank.source}
@@ -59,4 +64,4 @@ def search(level: Level) -> ScoredProgram:
             countdown -= 1
             if countdown == 0:
                 break
-    return best
+    return population

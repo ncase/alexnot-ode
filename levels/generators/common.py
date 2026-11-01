@@ -54,10 +54,12 @@ def write_level(name: str, variable_names: list[str], demos: list[dict], output_
     path.write_text(json.dumps(level))
 
 
-def plot_level(name: str, variable_names: list[str], demos: list[dict], noise_fraction: float) -> None:
-    """Graph each demo: lines are the ground truth, dots are what the program gets to see."""
-    figure, axes = plt.subplots(1, len(demos), figsize=(4.4 * len(demos), 3.8), facecolor=SURFACE, constrained_layout=True)
-    for axis, demo in zip(axes, demos):
+def plot_level(name: str, variable_names: list[str], demos: list[dict], noise_fraction: float | None) -> None:
+    """Graph each demo: lines are the ground truth, dots are what the program gets to see. A noise fraction of None means real data."""
+    # A lone demo gets a wider graph, so its title fits
+    figure_width: float = 4.4 * len(demos) if len(demos) > 1 else 7.0
+    figure, axes = plt.subplots(1, len(demos), figsize=(figure_width, 3.8), facecolor=SURFACE, constrained_layout=True, squeeze=False)
+    for axis, demo in zip(axes[0], demos):
         for column, variable in enumerate(variable_names):
             axis.plot(demo['dense_times'], demo['dense_states'][:, column], color=COLORS[column], linewidth=2, zorder=2, label=variable)
             axis.scatter(demo['times'], demo['states'][:, column], s=26, color=COLORS[column], edgecolors=SURFACE, linewidths=0.8, zorder=3)
@@ -71,7 +73,8 @@ def plot_level(name: str, variable_names: list[str], demos: list[dict], noise_fr
         axis.set_xlabel('time', fontsize=9, color=MUTED)
         # Above the plot, so the legend can never cover the data
         axis.legend(frameon=False, fontsize=9, labelcolor=INK, ncols=3, loc='lower left', bbox_to_anchor=(0, 1), borderaxespad=0.1, handlelength=1.2)
-    figure.suptitle(f'{name}: {len(demo["times"])} samples per demo, {noise_fraction:.0%} noise', x=0.01, ha='left', fontsize=13, color=INK)
+    noise_label: str = 'real data' if noise_fraction is None else f'{noise_fraction:.0%} noise'
+    figure.suptitle(f'{name}: {len(demo["times"])} samples per demo, {noise_label}', x=0.01, ha='left', fontsize=13, color=INK)
     PLOTS_PATH.mkdir(parents=True, exist_ok=True)
     figure.savefig(PLOTS_PATH / f'{name}.png', dpi=130, facecolor=SURFACE)
     plt.close(figure)
