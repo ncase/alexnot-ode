@@ -15,6 +15,8 @@ Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 CLOSE_FRACTION: float = 0.5
 # What counts as "near zero" depends on how big a parameter's term is, so try a few cutoffs. Adding & deleting terms both use these
 NEAR_ZERO_CUTOFFS: list[float] = [0.001, 0.01, 0.1]
+# Only for the add-term monkeys' fit, never the scorer's. Picked on SIR at 1% noise only, from 0.01 up to 0.08
+RIDGE_PENALTY: float = 0.05
 RELATIONS: dict[str, Callable[[float, float], float]] = {'+': operator.add, '-': operator.sub, '*': operator.mul}
 
 
@@ -59,8 +61,8 @@ def _propose_big_terms(parents: list[ScoredProgram], level: Level, terms: list[s
         for demo, residuals in zip(level.demos, parent.residuals):
             term_columns: np.ndarray = np.column_stack([trapezoid_step(_term_values(term, demo), demo.times) for term in terms])
             residual_columns: np.ndarray = np.column_stack([residuals[variable] for variable in level.variable_names])
-            # Shaped (term, variable)
-            coefficients: np.ndarray = np.linalg.lstsq(term_columns, residual_columns, rcond=None)[0]
+            # Ridge regression, so nearly-redundant terms share the credit instead of fighting with huge opposite coefficients. Shaped (term, variable)
+            coefficients: np.ndarray = np.linalg.solve(term_columns.T @ term_columns + RIDGE_PENALTY * np.eye(len(terms)), term_columns.T @ residual_columns)
             for cutoff in NEAR_ZERO_CUTOFFS:
                 # Only size counts here, not sign: the fit flips any negative parameters to `-=` later on.
                 # A term the parent already has gets no second line, since the scorer refits the one it's got
