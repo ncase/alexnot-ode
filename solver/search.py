@@ -8,7 +8,7 @@ from programs import Level, Proposal, ScoredProgram, canonicalize, evaluate
 
 EVO_MAX_GENERATIONS: int = 20
 EVO_EARLY_STOP_COUNTDOWN: int = 3
-PARENTS_TOP_K: int = 5
+PARENTS_TOP_K: int = 10
 # Two programs whose scores differ by less than this are the same program, spelled differently
 SAME_SCORE_TOLERANCE: float = 1e-5
 # Time limits, in seconds. An unlucky slow level still gets an answer, from whatever got scored in time
