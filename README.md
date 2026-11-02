@@ -119,7 +119,7 @@ Monkeys propose, and the scorer decides. Each monkey receives the parents, their
 
 **`snap_to_one`:** when a parameter is close to 1 in absolute value, proposes removing it, so `diff.x += params.a * data.y` becomes `diff.x += data.y`. The sign rewriting covers -1.
 
-**`tie_parameters`:** when two parameters are close in absolute value on any demo, proposes making them one parameter, flipping the replaced one's lines if their signs are opposite. It only refuses to tie two parts of one relation, like `a - a`. Everything else is left for the scorer to filter. SIR needs this, because the flow out of Susceptible has to exactly match the flow into Infected:
+**`tie_parameters`:** when two parameters are close in absolute value on every demo, with the same signs or opposite signs on every demo, proposes making them one parameter, flipping the replaced one's lines if their signs are opposite. It refuses to tie two parts of one relation, like `a - a`, or to flip a line with a relation in it. We tried relaxing this to "close on any demo": it added about 35% more programs on Lotka-Volterra, lost a seed on 4 noise settings, and didn't help SIR. SIR needs this, because the flow out of Susceptible has to exactly match the flow into Infected:
 
 ```python
 diff.x -= params.a * data.x * data.y
@@ -173,7 +173,7 @@ Own `.venv` with numpy, scipy and matplotlib. No system packages.
 1. ✅ This spec.
 2. ✅ Generate the example systems with graphs (`solver/systems.py`, `solver/plot_systems.py`, `plots/systems.png`), and grab the lynx/hare data.
 3. Make it solve the systems, simplest first: exponential ✅, logistic ✅, Bass ✅, Newton's law of cooling ✅ (`x' = k*room - k*x`), falling with air drag ✅ (`v' = g - k*v²`), damped spring ✅, Lotka-Volterra ✅ (all at 10% noise, run with `solver/run_level.py`; actual demo settings are in `levels/generators/`), SIR, then Lorenz. Stretch system after that: Michaelis-Menten. That's 10 levels. (Skipping Goodwin, since it has the same shape as Lotka-Volterra. Exponential growth & decay are one level, since their demos share one program.)
-4. Run the noise and sparsity fan, the lynx/hare attempt, and the per-variable island ablation, and make the paper figures.
+4. Run the noise and sparsity fan and the lynx/hare attempt, and make the paper figures.
 
 ## Known risks
 

@@ -1,6 +1,6 @@
 # spring
 
-Solved in 0.14 seconds. 245 programs considered, over 6 rounds.
+Solved in 0.13 seconds. 232 programs considered, over 6 rounds.
 
 ## Winner
 
@@ -108,12 +108,12 @@ diff.y += params.f * data.y * data.y
 
 ## Round 1 | 0.03s | best score: -318.10
 
-+78 new programs (78 actually scored)
++73 new programs (73 actually scored)
 * add_terms: +53
 * delete_lines: +17
 * relate_parameters: +0
 * snap_to_one: +3
-* tie_parameters: +5
+* tie_parameters: +0
 
 ### 5 parents for the next round
 
@@ -177,14 +177,14 @@ diff.y += params.i * data.y * data.y
   Demo 1: a = 0.010, b = 0.041, c = 0.968, d = 0.002, e = 1.537, f = 0.058, g = 0.021, h = 0.310, i = -0.057
   Demo 2: a = 0.022, b = 0.014, c = 1.034, d = -0.493, e = 8.356, f = 0.345, g = 0.150, h = 0.538, i = 0.028
 
-## Round 2 | 0.05s | best score: -318.96
+## Round 2 | 0.04s | best score: -318.96
 
-+77 new programs (77 actually scored)
++66 new programs (66 actually scored)
 * add_terms: +30
 * delete_lines: +31
 * relate_parameters: +0
 * snap_to_one: +5
-* tie_parameters: +11
+* tie_parameters: +0
 
 ### 5 parents for the next round
 

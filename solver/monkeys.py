@@ -117,24 +117,30 @@ def relate_parameters(parents: list[ScoredProgram], level: Level) -> list[Propos
 
 
 def tie_parameters(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
-    """When two parameters are close in size on ANY demo, propose making them one parameter. If that's with opposite signs, the replaced one's lines flip between += and -=.
-
-    We'd rather propose too many: the scorer filters out the ones that don't actually fit.
-    """
+    """When two parameters are close in size on EVERY demo, propose making them one parameter. If their signs are opposite on every demo, the replaced one's lines flip between += and -=."""
     proposals: list[Proposal] = []
     for parent in parents:
         lines: list[str] = parent.source.splitlines()
         for kept, replaced in itertools.combinations(parent.params[0], 2):
-            replaced_pattern: re.Pattern = re.compile(rf'params\.{replaced}\b')
-            # Tying two parts of one relation gives junk like (a - a)
-            if any(replaced_pattern.search(line) and kept in PARAMETER_PATTERN.findall(line) for line in lines):
+            if any(abs(abs(demo_params[kept]) - abs(demo_params[replaced])) > CLOSE_FRACTION * abs(demo_params[replaced]) for demo_params in parent.params):
                 continue
-            for sign in [1, -1]:
-                if any(abs(demo_params[kept] - sign * demo_params[replaced]) <= CLOSE_FRACTION * abs(demo_params[replaced]) for demo_params in parent.params):
-                    new_lines: list[str] = [flip_sign(line) if sign == -1 and replaced_pattern.search(line) else line for line in lines]
-                    source: str = replaced_pattern.sub(f'params.{kept}', '\n'.join(new_lines))
-                    params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name != replaced} for demo_params in parent.params]
-                    proposals.append(Proposal(source, params))
+            # Same sign on some demos and opposite on others can't be one parameter
+            same_signs: bool = all(demo_params[kept] * demo_params[replaced] > 0 for demo_params in parent.params)
+            opposite_signs: bool = all(demo_params[kept] * demo_params[replaced] < 0 for demo_params in parent.params)
+            if not same_signs and not opposite_signs:
+                continue
+            replaced_pattern: re.Pattern = re.compile(rf'params\.{replaced}\b')
+            lines_using_it: list[str] = [line for line in lines if replaced_pattern.search(line)]
+            # Tying two parts of one relation gives junk like (a - a)
+            if any(kept in PARAMETER_PATTERN.findall(line) for line in lines_using_it):
+                continue
+            # Flipping a whole line can't flip just one part of a relation
+            if opposite_signs and any(len(PARAMETER_PATTERN.findall(line)) > 1 for line in lines_using_it):
+                continue
+            new_lines: list[str] = [flip_sign(line) if opposite_signs and replaced_pattern.search(line) else line for line in lines]
+            source: str = replaced_pattern.sub(f'params.{kept}', '\n'.join(new_lines))
+            params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name != replaced} for demo_params in parent.params]
+            proposals.append(Proposal(source, params))
     return proposals
 
 
