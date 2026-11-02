@@ -27,9 +27,9 @@ TIMESERIES_PATH: Path = Path(__file__).parent.parent / 'levels' / 'timeseries'
 
 # Every program line looks like `diff.x += params.a * data.x`, or `diff.x += (params.b - params.a) * data.x` with a relation,
 # or `diff.x += data.y` with no parameter at all
-LINE_PATTERN: re.Pattern = re.compile(r'diff\.(\w+) ([+-])= (?:(params\.\w+|\(params\.\w+ [-+*/] params\.\w+\))(?: \* )?)?(.*)')
+LINE_PATTERN: re.Pattern = re.compile(r'diff\.(\w+) ([+-])= (?:(params\.\w+|\(params\.\w+ [-+*] params\.\w+\))(?: \* )?)?(.*)')
 PARAMETER_PATTERN: re.Pattern = re.compile(r'params\.(\w+)')
-NONLINEAR_RELATION_PATTERN: re.Pattern = re.compile(r'params\.\w+ [*/] params\.\w+')
+NONLINEAR_RELATION_PATTERN: re.Pattern = re.compile(r'params\.\w+ \* params\.\w+')
 
 
 def trapezoid_step(values: np.ndarray, times: np.ndarray) -> np.ndarray:
@@ -161,7 +161,7 @@ def fit_parameters(source: str, start_params: dict[str, float], demo: Demo) -> d
         return np.concatenate([residuals[name] / np.sqrt(demo.blank_mean_squared_errors[name]) for name in demo.variable_names])
 
     start: np.ndarray = np.array([start_params[name] for name in names])
-    # A relation like a * b or a / b means crawling towards the answer, the slow way
+    # A relation like a * b means crawling towards the answer, the slow way
     if NONLINEAR_RELATION_PATTERN.search(source):
         fit = least_squares(weighted_residuals, start)
         return dict(zip(names, map(float, fit.x)))

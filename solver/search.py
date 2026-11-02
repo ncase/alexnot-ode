@@ -87,7 +87,7 @@ def search_population(level: Level, round_logs: list[RoundLog] | None = None) ->
             # A crash just means this program's dropped
             try:
                 child: ScoredProgram = evaluate(new_proposals[source_before_fit], level)
-            except (ValueError, ZeroDivisionError, FloatingPointError, OverflowError):
+            except (ValueError, FloatingPointError, OverflowError):
                 continue
             # Fitting can flip signs, which can turn this into a program we've already seen
             if child.source != source_before_fit and child.source in tried_sources:

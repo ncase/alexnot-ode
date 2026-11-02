@@ -15,7 +15,7 @@ Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 CLOSE_FRACTION: float = 0.5
 # What counts as "near zero" depends on how big a parameter's term is, so try a few cutoffs, biggest deletion last
 NEAR_ZERO_CUTOFFS: list[float] = [0.01, 0.03, 0.1]
-RELATIONS: dict[str, Callable[[float, float], float]] = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
+RELATIONS: dict[str, Callable[[float, float], float]] = {'+': operator.add, '-': operator.sub, '*': operator.mul}
 
 
 def _is_close(first: float, second: float) -> bool:
@@ -40,37 +40,46 @@ def _term_values(term: str, demo: Demo) -> np.ndarray:
     return values
 
 
-def _add_lines(parent: ScoredProgram, variable: str, new_terms: list[str], level: Level) -> Proposal:
-    """Add terms to one equation. On each demo separately, start them at the values that best explain that demo's residual."""
+def _add_lines(parent: ScoredProgram, variable: str, new_terms: list[str], coefficients: np.ndarray) -> Proposal:
+    """Add terms to one equation, starting them at their coefficients, which are shaped (demo, term)."""
     lines: list[str] = parent.source.splitlines()
     new_names: list[str] = [f'new{index}' for index in range(len(new_terms))]
     for name, term in zip(new_names, new_terms):
         lines.append(f'diff.{variable} += params.{name}' + (f' * {term}' if term else ''))
-
-    params: list[dict[str, float]] = []
-    for demo, parent_params, parent_residuals in zip(level.demos, parent.params, parent.residuals):
-        columns: np.ndarray = np.column_stack([trapezoid_step(_term_values(term, demo), demo.times) for term in new_terms])
-        coefficients: np.ndarray = np.linalg.lstsq(columns, parent_residuals[variable], rcond=None)[0]
-        params.append({**parent_params, **dict(zip(new_names, map(float, coefficients)))})
+    # The fit flips any negative parameters to `-=` later on
+    params: list[dict[str, float]] = [{**parent_params, **dict(zip(new_names, map(float, demo_coefficients)))} for parent_params, demo_coefficients in zip(parent.params, coefficients)]
     return Proposal('\n'.join(lines), params)
 
 
-def add_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
-    """Linear regression on the residual. Proposes each missing term alone, all the linear ones together, and all of them together."""
-    linear_terms: list[str] = _linear_term_names(level.variable_names)
-    all_terms: list[str] = linear_terms + _quadratic_term_names(level.variable_names)
+def _propose_big_terms(parents: list[ScoredProgram], level: Level, terms: list[str]) -> list[Proposal]:
+    """Like SINDy: on each demo, fit all the missing terms to the residual at once. Then, for each cutoff, propose adding just the terms above it on EVERY demo."""
     proposals: list[Proposal] = []
     for parent in parents:
         # What each equation already has
         existing: set[tuple[str, str]] = {(split_line(line)[0], split_line(line)[2]) for line in parent.source.splitlines()}
         for variable in level.variable_names:
-            missing_all: list[str] = [term for term in all_terms if (variable, term) not in existing]
-            missing_linear: list[str] = [term for term in linear_terms if (variable, term) not in existing]
-            bundles: list[list[str]] = [[term] for term in missing_all] + [missing_linear, missing_all]
-            for bundle in bundles:
-                if bundle:
-                    proposals.append(_add_lines(parent, variable, bundle, level))
+            missing: list[str] = [term for term in terms if (variable, term) not in existing]
+            if not missing:
+                continue
+            coefficients: np.ndarray = np.array([
+                np.linalg.lstsq(np.column_stack([trapezoid_step(_term_values(term, demo), demo.times) for term in missing]), residuals[variable], rcond=None)[0]
+                for demo, residuals in zip(level.demos, parent.residuals)
+            ])
+            for cutoff in NEAR_ZERO_CUTOFFS:
+                # Only size counts here, not sign
+                is_big: np.ndarray = np.all(np.abs(coefficients) >= cutoff, axis=0)
+                if is_big.any():
+                    proposals.append(_add_lines(parent, variable, [term for term, big in zip(missing, is_big) if big], coefficients[:, is_big]))
     return proposals
+
+
+def add_linear_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+    """Linear terms & quadratic terms get fitted separately, since similar-looking terms can split the credit between them."""
+    return _propose_big_terms(parents, level, _linear_term_names(level.variable_names))
+
+
+def add_quadratic_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+    return _propose_big_terms(parents, level, _quadratic_term_names(level.variable_names))
 
 
 def delete_lines(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
@@ -109,15 +118,13 @@ def delete_near_zeros(parents: list[ScoredProgram], level: Level) -> list[Propos
 def _relation_is_close(target: str, first: str, second: str, symbol: str, sign: int, all_params: list[dict[str, float]]) -> bool:
     """Is target ≈ sign * (first (symbol) second), on EVERY demo? A coincidence on one demo shouldn't count."""
     for demo_params in all_params:
-        if symbol == '/' and demo_params[second] == 0:
-            return False
         if not _is_close(demo_params[target], sign * RELATIONS[symbol](demo_params[first], demo_params[second])):
             return False
     return True
 
 
 def relate_parameters(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
-    """When one parameter's close to the sum/difference/product/ratio of two others, propose replacing it with that expression."""
+    """When one parameter's close to the sum/difference/product of two others, propose replacing it with that expression."""
     proposals: list[Proposal] = []
     for parent in parents:
         for target in parent.params[0]:
@@ -186,4 +193,4 @@ def snap_to_one(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return proposals
 
 
-MONKEYS: list[Monkey] = [add_terms, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]
+MONKEYS: list[Monkey] = [add_linear_terms, add_quadratic_terms, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]
