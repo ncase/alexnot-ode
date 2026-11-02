@@ -92,9 +92,9 @@ total_score = SCORE_COEFF_ACCURACY * (average over demos of (sum over variables 
 
 **Why the floor:** on noiseless data, the error can hit 0, and log(0) is infinite. The floor also stops tiny numerical improvements from earning points. It's set at 1e-3 because on perfect data, the intended programs' errors are the trapezoid step's own, up to about 1e-4 of the blank program's. With a floor of 1e-12, extra terms fit that error and beat the right answer on 6 of 8 levels. At 1e-3, all 8 solve. Noisy data stays far above it: the lowest error we measured from an intended program was 3.6e-2.
 
-**Constants** (token and parameter picked by `solver/fan_scoring.py`, on exponential and logistic only; accuracy picked as the best total on the 8 fan levels, so it's tuned on the same data it's tested on; they live as magic constants at the top of the file):
+**Constants** (token and parameter picked by `solver/fan_scoring.py`, on exponential and logistic only; accuracy picked by Nicky from a fan on the 8 fan levels, so it's tuned on the same data it's tested on; they live as magic constants at the top of the file):
 
-- `SCORE_COEFF_ACCURACY = 37.5`
+- `SCORE_COEFF_ACCURACY = 25`
 - `SCORE_COEFF_TOKEN = 0.1`
 - `SCORE_COEFF_PARAMETER = 0.5`
 - `MSE_FLOOR = 1e-3`

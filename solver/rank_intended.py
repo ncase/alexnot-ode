@@ -2,8 +2,9 @@
 
 "Intended" is checked mechanically: an exact match on the canonical program string, with no LLM or human judging.
 The rank only counts programs the search actually tried, so on every loss we also score the intended program directly:
-if it beats the winner, that's a search problem. If it doesn't, that's a scoring problem.
-If it exactly ties the winner, the winner's just another spelling of the same equation, so that counts as solved.
+if it beats the winner, that's a search problem. If it doesn't, that's a scoring problem, for now, even if the winner might be a valid answer.
+If it exactly ties the winner, the winner's just another spelling of the same equation. That's a synonym, which counts as solved.
+Every winner that isn't the intended program gets printed, so a human can judge it.
 
 Goes up through noise levels in order, and stops at the first one where no seed solves.
 
@@ -60,16 +61,28 @@ def score_directly(source: str, level: Level) -> float:
     return evaluate(Proposal(source, [{name: 1.0 for name in names} for _ in level.demos]), level).score
 
 
-def diagnose(population: list[ScoredProgram], intended: set[str], level: Level) -> str:
-    """'solved', 'search problem' (the intended program beats the winner, but wasn't found), or 'scoring problem' (the winner really does score better)."""
-    winner_score: float = min(program.score for program in population)
+def diagnose(population: list[ScoredProgram], intended: set[str], level: Level) -> tuple[str, float]:
+    """The verdict, and how many points the intended program's score is above the winner's (negative means it beat the winner).
+
+    'solved', 'synonym' (the winner's a different spelling, with the same score), 'search problem' (the intended program beats the winner, but wasn't found),
+    or 'scoring problem' (the winner really does score better).
+    """
+    winner: ScoredProgram = min(population, key=lambda program: program.score)
     intended_score: float = min(score_directly(source, level) for source in intended)
-    if abs(intended_score - winner_score) <= SAME_SCORE_TOLERANCE:
-        return 'solved'
-    return 'search problem' if intended_score < winner_score else 'scoring problem'
+    gap: float = intended_score - winner.score
+    if winner.source in intended:
+        return 'solved', gap
+    if abs(gap) <= SAME_SCORE_TOLERANCE:
+        return 'synonym', gap
+    return ('search problem' if gap < 0 else 'scoring problem'), gap
 
 
-def run_job(job: tuple[str, str, int, Path, tuple[float, float, float]]) -> tuple[int | None, float | None, str, int | None, str]:
+def short_text(source: str) -> str:
+    """A program on one line, without the noise."""
+    return source.replace('diff.', '').replace('params.', '').replace('data.', '').replace('\n', ' | ') or '(blank program)'
+
+
+def run_job(job: tuple[str, str, int, Path, tuple[float, float, float]]) -> tuple[int | None, float | None, str, int | None, str, float]:
     level_name, noise_label, seed, fan_path, coeffs = job
     programs.SCORE_COEFF_ACCURACY, programs.SCORE_COEFF_TOKEN, programs.SCORE_COEFF_PARAMETER = coeffs
     level: Level = load_level(fan_path / f'{level_name}_noise{noise_label}_seed{seed:02d}.json')
@@ -77,7 +90,7 @@ def run_job(job: tuple[str, str, int, Path, tuple[float, float, float]]) -> tupl
     rank, margin, winner = rank_of(population, INTENDED_PROGRAMS[level_name])
     # Also rank the looser form, counting either as right
     loose_rank: int | None = rank_of(population, INTENDED_PROGRAMS[level_name] | {LOOSE_PROGRAMS[level_name]})[0] if level_name in LOOSE_PROGRAMS else None
-    return rank, margin, winner, loose_rank, diagnose(population, INTENDED_PROGRAMS[level_name], level)
+    return rank, margin, winner, loose_rank, *diagnose(population, INTENDED_PROGRAMS[level_name], level)
 
 
 if __name__ == '__main__':
@@ -102,11 +115,19 @@ if __name__ == '__main__':
                     'never tried': ranks.count(None),
                 }
                 margin_text: str = f'  behind by median {statistics.median(margins):.1f}, worst {max(margins):.1f}' if margins else ''
-                line: str = f"{level_name:15s} {noise_label}%: solved {verdicts.count('solved'):2d}/{len(SEEDS)}, search problem {verdicts.count('search problem')}, scoring problem {verdicts.count('scoring problem')}  | " + ' '.join(f'{label}:{count}' for label, count in counts.items()) + margin_text
+                solved_count: int = verdicts.count('solved') + verdicts.count('synonym')
+                line: str = f"{level_name:15s} {noise_label}%: solved {solved_count:2d}/{len(SEEDS)} (synonyms {verdicts.count('synonym')}), search problem {verdicts.count('search problem')}, scoring problem {verdicts.count('scoring problem')}  | " + ' '.join(f'{label}:{count}' for label, count in counts.items()) + margin_text
                 if level_name in LOOSE_PROGRAMS:
                     line += f"  (top 1 with loose form too: {sum(result[3] == 1 for result in results)})"
                 print(line, flush=True)
+                # The winners that aren't the intended program, most common first. Some of these might be valid answers!
+                false_winners: dict[tuple[str, str], list[float]] = {}
+                for result in results:
+                    if result[4] != 'solved':
+                        false_winners.setdefault((result[4], result[2]), []).append(result[5])
+                for (verdict, winner), gaps in sorted(false_winners.items(), key=lambda item: -len(item[1])):
+                    print(f"    false winner {len(gaps):2d}x, {verdict}, intended is {statistics.median(gaps):+.2f} from it: {short_text(winner)}", flush=True)
                 # If this noise level never solves, more noise isn't going to help
-                if 'solved' not in verdicts:
+                if solved_count == 0:
                     print(f'{level_name:15s} stopping: nothing solved at {noise_label}%', flush=True)
                     break

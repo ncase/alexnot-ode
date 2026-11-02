@@ -10,7 +10,7 @@ import programs
 from programs import TIMESERIES_PATH, Level, load_level, split_line
 from search import search
 
-ACCURACY_COEFFS: list[float] = [1.0, 2.0, 3.0, 5.0, 10.0, 20.0]
+ACCURACY_COEFFS: list[float] = [5.0, 7.5, 12.5, 25.0, 37.5, 50.0]
 TOKEN_COEFFS: list[float] = [0.0, 0.1, 0.25, 0.5, 1.0]
 PARAMETER_COEFFS: list[float] = [0.0, 0.5, 1.0, 2.0, 4.0]
 NOISE_LABELS: list[str] = ['05', '10', '20']
