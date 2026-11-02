@@ -33,7 +33,9 @@ def make_trace(level_name: str, population: list[ScoredProgram], round_logs: lis
     for round_number, round_log in enumerate(round_logs):
         proposed: int = sum(round_log.new_proposals_by_monkey.values())
         out_of_time: str = ' (OUT OF TIME)' if round_log.scored_count < proposed else ''
-        trace += f'## Round {round_number} | {round_log.seconds:.2f}s | best score: {round_log.best_score:.2f}\n\n'
+        # No improvement on the round before?
+        stable: str = ' (stable)' if round_number > 0 and round_log.best_score == round_logs[round_number - 1].best_score else ''
+        trace += f'## Round {round_number} | {round_log.seconds:.2f}s | best score: {round_log.best_score:.2f}{stable}\n\n'
         trace += f'+{proposed} new programs ({round_log.scored_count} actually scored){out_of_time}\n'
         trace += ''.join(f'* {monkey_name}: +{count}\n' for monkey_name, count in round_log.new_proposals_by_monkey.items())
         trace += f'\n### {len(round_log.parents)} parents for the next round\n\n'

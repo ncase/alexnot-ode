@@ -134,7 +134,7 @@ diff.x += (params.b - params.a) * data.x
 diff.x -= params.b * data.x * data.x
 ```
 
-"Close" for `snap_to_one`, `tie_parameters` and `relate_parameters` means within `CLOSE_FRACTION = 0.2`, as a starting guess. It only filters proposals, so being generous is safe. The scorer may still accept a coincidence, if the fit barely gets worse, so `relate_parameters` is the monkey to watch for false positives.
+"Close" for `snap_to_one`, `tie_parameters` and `relate_parameters` means the same sign, with the bigger number under `1 + CLOSE_FRACTION` times the smaller one. `CLOSE_FRACTION = 0.2` is a starting guess. It only filters proposals, so being generous is safe. The scorer may still accept a coincidence, if the fit barely gets worse, so `relate_parameters` is the monkey to watch for false positives.
 
 ## Test data
 

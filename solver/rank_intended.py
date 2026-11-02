@@ -8,7 +8,7 @@ Every winner that isn't the intended program gets printed, so a human can judge 
 
 Goes up through noise levels in order, and stops at the first one where no seed solves.
 
-Usage: python solver/rank_intended.py [--levels bass spring] [--fan-path some/folder] [--coeffs 2 0.1 0.5]
+Usage: python solver/rank_intended.py [--levels bass spring] [--fan-path some/folder] [--coeffs 25 0.1 0.5] [--close-fraction 0.5]
 Needs levels/timeseries/fan/ to exist. (Run levels/generators/generate_fan.py)
 """
 import argparse
@@ -16,11 +16,12 @@ import multiprocessing
 from pathlib import Path
 import statistics
 
+import monkeys
 import programs
 from programs import PARAMETER_PATTERN, TIMESERIES_PATH, Level, Proposal, ScoredProgram, evaluate, load_level
 from search import SAME_SCORE_TOLERANCE, search_population
 
-NOISE_LABELS: list[str] = ['00', '05', '10', '20']
+NOISE_LABELS: list[str] = ['01', '05', '10', '20']
 SEEDS: range = range(20)
 
 # Only this file & the fans know the answers. The search itself never sees these
@@ -82,9 +83,10 @@ def short_text(source: str) -> str:
     return source.replace('diff.', '').replace('params.', '').replace('data.', '').replace('\n', ' | ') or '(blank program)'
 
 
-def run_job(job: tuple[str, str, int, Path, tuple[float, float, float]]) -> tuple[int | None, float | None, str, int | None, str, float]:
-    level_name, noise_label, seed, fan_path, coeffs = job
+def run_job(job: tuple[str, str, int, Path, tuple[float, float, float], float]) -> tuple[int | None, float | None, str, int | None, str, float]:
+    level_name, noise_label, seed, fan_path, coeffs, close_fraction = job
     programs.SCORE_COEFF_ACCURACY, programs.SCORE_COEFF_TOKEN, programs.SCORE_COEFF_PARAMETER = coeffs
+    monkeys.CLOSE_FRACTION = close_fraction
     level: Level = load_level(fan_path / f'{level_name}_noise{noise_label}_seed{seed:02d}.json')
     population: list[ScoredProgram] = search_population(level)
     rank, margin, winner = rank_of(population, INTENDED_PROGRAMS[level_name])
@@ -98,12 +100,13 @@ if __name__ == '__main__':
     parser.add_argument('--levels', nargs='+', default=list(INTENDED_PROGRAMS))
     parser.add_argument('--fan-path', type=Path, default=TIMESERIES_PATH / 'fan')
     parser.add_argument('--coeffs', nargs=3, type=float, default=[programs.SCORE_COEFF_ACCURACY, programs.SCORE_COEFF_TOKEN, programs.SCORE_COEFF_PARAMETER])
+    parser.add_argument('--close-fraction', type=float, default=monkeys.CLOSE_FRACTION)
     arguments = parser.parse_args()
 
     with multiprocessing.Pool() as pool:
         for level_name in arguments.levels:
             for noise_label in NOISE_LABELS:
-                jobs = [(level_name, noise_label, seed, arguments.fan_path, tuple(arguments.coeffs)) for seed in SEEDS]
+                jobs = [(level_name, noise_label, seed, arguments.fan_path, tuple(arguments.coeffs), arguments.close_fraction) for seed in SEEDS]
                 results = pool.map(run_job, jobs)
                 ranks: list[int | None] = [result[0] for result in results]
                 margins: list[float] = [result[1] for result in results if result[0] is not None and result[0] > 1]

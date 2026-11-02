@@ -9,8 +9,8 @@ import sir
 import spring
 from common import TIMESERIES_PATH, write_level
 
-# 0% is a sanity check: with perfect data, a level should definitely solve
-NOISE_FRACTIONS: list[float] = [0.0, 0.05, 0.10, 0.20]
+# 1% is a sanity check: with almost perfect data, a level should definitely solve
+NOISE_FRACTIONS: list[float] = [0.01, 0.05, 0.10, 0.20]
 SEED_COUNT: int = 40
 
 for level_name, module in [('exponential', exponential), ('logistic', logistic), ('bass', bass), ('newton', newton), ('drag', drag), ('spring', spring), ('lotka_volterra', lotka_volterra), ('sir', sir)]:

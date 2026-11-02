@@ -11,8 +11,13 @@ from programs import Demo, Level, PARAMETER_PATTERN, Proposal, ScoredProgram, fl
 Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 
 # "Close" only filters what gets proposed, so being generous is safe. The scorer has the final say
+# Two numbers are close if they have the same sign, and the bigger one's under (1 + this) times the smaller one
 CLOSE_FRACTION: float = 0.2
 RELATIONS: dict[str, Callable[[float, float], float]] = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
+
+
+def _is_close(first: float, second: float) -> bool:
+    return first * second > 0 and max(abs(first), abs(second)) <= (1 + CLOSE_FRACTION) * min(abs(first), abs(second))
 
 
 def _linear_term_names(variable_names: list[str]) -> list[str]:
@@ -86,7 +91,7 @@ def _relation_is_close(target: str, first: str, second: str, symbol: str, sign: 
     for demo_params in all_params:
         if symbol == '/' and demo_params[second] == 0:
             return False
-        if abs(demo_params[target] - sign * RELATIONS[symbol](demo_params[first], demo_params[second])) > CLOSE_FRACTION * abs(demo_params[target]):
+        if not _is_close(demo_params[target], sign * RELATIONS[symbol](demo_params[first], demo_params[second])):
             return False
     return True
 
@@ -122,7 +127,7 @@ def tie_parameters(parents: list[ScoredProgram], level: Level) -> list[Proposal]
     for parent in parents:
         lines: list[str] = parent.source.splitlines()
         for kept, replaced in itertools.combinations(parent.params[0], 2):
-            if any(abs(abs(demo_params[kept]) - abs(demo_params[replaced])) > CLOSE_FRACTION * abs(demo_params[replaced]) for demo_params in parent.params):
+            if not all(_is_close(abs(demo_params[kept]), abs(demo_params[replaced])) for demo_params in parent.params):
                 continue
             # Same sign on some demos and opposite on others can't be one parameter
             same_signs: bool = all(demo_params[kept] * demo_params[replaced] > 0 for demo_params in parent.params)
@@ -154,7 +159,7 @@ def snap_to_one(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
             if any(' * ' not in line or len(PARAMETER_PATTERN.findall(line)) > 1 for line in lines_using_it):
                 continue
             # The sign tidy-up already turned all-negative parameters positive, so this covers -1 too
-            if all(abs(demo_params[name] - 1) <= CLOSE_FRACTION for demo_params in parent.params):
+            if all(_is_close(demo_params[name], 1.0) for demo_params in parent.params):
                 source: str = re.sub(rf'params\.{name} \* ', '', parent.source)
                 params: list[dict[str, float]] = [{key: value for key, value in demo_params.items() if key != name} for demo_params in parent.params]
                 proposals.append(Proposal(source, params))
