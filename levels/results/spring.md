@@ -342,7 +342,7 @@ diff.y -= params.c * data.y
   Demo 1: a = 0.040, b = 1.533, c = 0.312
   Demo 2: a = -0.005, b = 8.415, c = 0.577
 
-## Round 5 | 0.02s | best score: -319.06
+## Round 5 | 0.01s | best score: -319.06
 
 +35 new programs (35 actually scored)
 * add_terms: +27

@@ -1,6 +1,6 @@
 # lynx_hare
 
-Solved in 1.45 seconds. 1171 programs considered, over 9 rounds.
+Solved in 1.39 seconds. 1171 programs considered, over 9 rounds.
 
 ## Winner
 
@@ -183,7 +183,7 @@ diff.x += params.f * data.y * data.y
 diff.y += params.g * data.x * data.x
   Demo 0: a = 2.610, b = 0.227, c = 0.010, d = 0.047, e = 0.060, f = 0.009, g = 0.003
 
-## Round 2 | 0.21s | best score: -197.30
+## Round 2 | 0.19s | best score: -197.30
 
 +256 new programs (256 actually scored)
 * add_terms: +21
@@ -263,7 +263,7 @@ diff.y += params.j * data.x * data.y
 diff.y -= params.k * data.y
   Demo 0: a = 2.610, b = 0.227, c = 0.010, d = 0.047, e = 0.060, f = 0.009, g = 12.016, h = 0.350, i = 0.000, j = 0.042, k = 1.501
 
-## Round 3 | 0.31s | best score: -198.38
+## Round 3 | 0.29s | best score: -198.38
 
 +321 new programs (321 actually scored)
 * add_terms: +0
@@ -336,7 +336,7 @@ diff.y += params.h * data.x * data.y
 diff.y -= params.i * data.y
   Demo 0: a = 0.227, b = 11.504, c = 0.010, d = 0.047, e = 0.060, f = 0.009, g = 0.313, h = 0.042, i = 1.505
 
-## Round 4 | 0.18s | best score: -198.88
+## Round 4 | 0.17s | best score: -198.88
 
 +210 new programs (210 actually scored)
 * add_terms: +2
@@ -407,7 +407,7 @@ diff.y += params.g * data.x * data.y
 diff.y -= params.h * data.y
   Demo 0: a = 0.181, b = 0.047, c = 0.010, d = 0.010, e = 11.505, f = 0.313, g = 0.042, h = 1.505
 
-## Round 5 | 0.15s | best score: -199.18
+## Round 5 | 0.14s | best score: -199.18
 
 +120 new programs (120 actually scored)
 * add_terms: +14
@@ -478,7 +478,7 @@ diff.y += (params.a * params.c) * data.x * data.y
 diff.y -= params.g * data.y
   Demo 0: a = 3.961, b = 0.176, c = 0.011, d = 0.047, e = 11.458, f = 0.312, g = 1.503
 
-## Round 6 | 0.30s | best score: -199.47
+## Round 6 | 0.29s | best score: -199.47
 
 +96 new programs (96 actually scored)
 * add_terms: +17
@@ -549,7 +549,7 @@ diff.y += (params.a * params.c) * data.x * data.y
 diff.y -= params.f * data.y
   Demo 0: a = 3.978, b = 0.188, c = 0.010, d = 11.109, e = 0.301, f = 1.486
 
-## Round 7 | 0.26s | best score: -199.47
+## Round 7 | 0.25s | best score: -199.47
 
 +72 new programs (72 actually scored)
 * add_terms: +20

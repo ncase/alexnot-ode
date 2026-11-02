@@ -1,6 +1,6 @@
 # lotka_volterra
 
-Solved in 0.28 seconds. 382 programs considered, over 10 rounds.
+Solved in 0.27 seconds. 382 programs considered, over 10 rounds.
 
 ## Winner
 
@@ -280,7 +280,7 @@ diff.y += params.k * data.y * data.y
   Demo 1: a = 2.792, b = 0.424, c = 0.002, d = 0.050, e = -0.027, f = -0.322, g = 0.016, h = 0.000, i = 0.018, j = 0.837, k = 0.004
   Demo 2: a = 0.167, b = 2.140, c = -0.002, d = 0.306, e = -0.072, f = -0.419, g = 0.029, h = -0.001, i = 0.099, j = 0.479, k = -0.014
 
-## Round 3 | 0.05s | best score: -230.30
+## Round 3 | 0.04s | best score: -230.30
 
 +47 new programs (47 actually scored)
 * add_terms: +0
@@ -508,7 +508,7 @@ diff.y -= params.g * data.y
   Demo 1: a = 2.792, b = 0.424, c = 0.002, d = 0.050, e = -0.027, f = 0.020, g = 0.798
   Demo 2: a = 0.167, b = 2.140, c = -0.002, d = 0.306, e = -0.072, f = 0.100, g = 0.683
 
-## Round 6 | 0.03s | best score: -232.95
+## Round 6 | 0.02s | best score: -232.95
 
 +41 new programs (41 actually scored)
 * add_terms: +10

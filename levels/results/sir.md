@@ -1,6 +1,6 @@
 # sir
 
-Solved in 2.49 seconds. 1874 programs considered, over 12 rounds.
+Solved in 2.41 seconds. 1874 programs considered, over 12 rounds.
 
 ## Winner
 
@@ -133,7 +133,7 @@ diff.x += params.d * data.z
   Demo 1: a = 0.122, b = -0.169, c = -0.154, d = -0.119
   Demo 2: a = 0.428, b = -0.496, c = -0.609, d = -0.415
 
-## Round 1 | 0.18s | best score: -126.55
+## Round 1 | 0.17s | best score: -126.55
 
 +206 new programs (206 actually scored)
 * add_terms: +142
@@ -239,7 +239,7 @@ diff.z += params.n * data.z
   Demo 1: a = 0.014, b = 0.344, c = -0.336, d = 0.328, e = 0.143, f = -0.426, g = 0.372, h = 0.462, i = -0.053, j = 0.068, k = 0.043, l = -0.041, m = 0.004, n = -0.043
   Demo 2: a = 0.021, b = -0.088, c = 0.106, d = 1.194, e = 0.029, f = -0.372, g = 0.214, h = 0.297, i = -0.087, j = 0.121, k = -0.191, l = 0.194, m = 0.432, n = 0.190
 
-## Round 2 | 0.49s | best score: -155.68
+## Round 2 | 0.47s | best score: -155.68
 
 +254 new programs (254 actually scored)
 * add_terms: +90
@@ -356,7 +356,7 @@ diff.z += params.u * data.z * data.z
   Demo 1: a = 0.281, b = 0.014, c = 0.344, d = -0.336, e = 0.328, f = 0.143, g = -0.426, h = 0.372, i = 0.462, j = -0.053, k = 0.068, l = 0.587, m = 0.126, n = 0.791, o = 0.635, p = 0.115, q = -1.739, r = 1.141, s = 1.713, t = -1.081, u = 0.491
   Demo 2: a = 0.821, b = 0.021, c = -0.088, d = 0.106, e = 1.194, f = 0.029, g = -0.372, h = 0.214, i = 0.297, j = -0.087, k = 0.121, l = -2.765, m = 6.040, n = 3.266, o = 0.163, p = 5.803, q = -0.787, r = 3.826, s = 0.281, t = 5.959, u = -3.210
 
-## Round 3 | 0.64s | best score: -156.95
+## Round 3 | 0.62s | best score: -156.95
 
 +275 new programs (275 actually scored)
 * add_terms: +76
@@ -764,7 +764,7 @@ diff.z += params.g * data.y
   Demo 1: a = 0.281, b = 0.037, c = 0.054, d = 0.180, e = 0.160, f = 0.039, g = 0.050
   Demo 2: a = 0.821, b = 0.100, c = 0.099, d = 0.798, e = -0.217, f = 0.116, g = 0.243
 
-## Round 8 | 0.14s | best score: -160.36
+## Round 8 | 0.13s | best score: -160.36
 
 +146 new programs (146 actually scored)
 * add_terms: +103
@@ -836,7 +836,7 @@ diff.z += params.h * data.y
   Demo 1: a = 0.281, b = -0.150, c = 0.175, d = 0.280, e = 0.102, f = 0.245, g = -0.094, h = 0.050
   Demo 2: a = 0.821, b = 0.004, c = -0.011, d = 0.716, e = -0.282, f = -0.192, g = 0.197, h = 0.243
 
-## Round 9 | 0.09s | best score: -160.58
+## Round 9 | 0.08s | best score: -160.58
 
 +102 new programs (102 actually scored)
 * add_terms: +80
