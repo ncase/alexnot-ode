@@ -1,0 +1,17 @@
+noise 05%: exact 0/20, right 7 terms & nothing extra 8/20, search problems 0, median true terms 7/7
+     5x x -= a * x | x += a * y | y += b * x | y -= c * x * z | y -= y | z += c * x * y | z -= d * z
+     1x x -= a * x | x += a * y | y += b * x | y -= c * x * z | y -= y | z += d * x * y | z -= e * z
+     1x x -= (a + b) * x | x -= c * x * z | x += d * y | x += e * y * z | y += f * x | y -= a * x * z | y -= y | z += a * x * y | z -= b * z
+     1x x -= a * x | x += b * y | y += c * x | y -= d * x * z | y -= e * y | z += d * x * y | z -= f * z
+noise 10%: exact 3/20, right 7 terms & nothing extra 9/20, search problems 0, median true terms 7/7
+     3x x -= a * x | x += a * y | y += b * x | y -= x * z | y -= y | z += x * y | z -= c * z
+     2x x -= a * x | x += a * y | y += b * x | y -= x * z | z += x * y | z -= c * z
+     2x x -= a * x | x += a * y | y += b * x | y -= x * z | y -= y | z += c * x * y | z -= d * z
+     2x x -= a * x | x += b * y | y += c * x | y -= x * z | y -= y | z += x * y | z -= d * z
+noise 20%: exact 1/20, right 7 terms & nothing extra 2/20, search problems 3, median true terms 6/7
+     7x x -= a * x | x += a * y | y += b * x | y -= x * z | z += x * y | z -= c * z
+     1x x += a * x | x -= b * x * z | x += c * y * z | y += d * x | y -= x * z | z += x * y | z -= e * z
+     1x x -= a * x | x += b * y | y += c * x | y -= x * z | z += x * y | z -= d * z
+     1x x -= a * x * z | x += b * y | y += c * x | y -= x * z | z += x * y | z -= d * z
+ALL DONE
+PROCESS ENDED

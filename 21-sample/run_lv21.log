@@ -1,0 +1,20 @@
+GENERATED:       80 files
+lotka_volterra  01%: solved  2/20 (synonyms 0), search problem 1, scoring problem 17  | #1:2 #2:1 #3:1 #4-10:6 #11+:3 never tried:7  behind by median 2.5, worst 6.1
+    false winner  4x, scoring problem, intended is +1.02 from it: x += a * x | x -= b * x * y | y += c | y -= d * x | y += e * x * y | y -= f * y
+    false winner  3x, scoring problem, intended is +2.56 from it: x += a * x | x += b * x * x | x -= c * x * y | x += d * y | y += e * x * y | y -= f * y
+    false winner  2x, scoring problem, intended is +4.32 from it: x += a * x | x -= b * x * y | y -= c * x * x | y += d * x * y | y -= e * y | y -= f * y * y
+    false winner  1x, scoring problem, intended is +2.21 from it: x += a * x | x -= b * x * y | y += c | y -= d * x | y += e * x * y | y -= c * y
+    false winner  1x, scoring problem, intended is +0.08 from it: x += a * x | x -= b * x * y | y += c | y -= d * x | y += d * x * y | y -= c * y
+    false winner  1x, scoring problem, intended is +3.76 from it: x += a * x | x -= b * x * y | y -= c | y += d * x | y -= e * x * x | y += f * x * y | y -= g * y | y -= h * y * y
+    false winner  1x, search problem, intended is -0.12 from it: x += a * x | x += b * x * x | x -= c * x * y | x += d * y | y += e * x * y | y -= f * y
+    false winner  1x, scoring problem, intended is +2.29 from it: x += a * x | x += b * x * x | x -= c * x * y | x += d * y | y += e | y -= f * x | y += f * x * y | y -= e * y
+    false winner  1x, scoring problem, intended is +2.58 from it: x -= a | x += b * x | x -= c * x * y | x += d * y | y += e | y -= f * x | y += f * x * y | y -= e * y
+    false winner  1x, scoring problem, intended is +4.83 from it: x += a | x += b * x | x += c * x * x | x -= d * x * y | x += e * y * y | y -= f * x * x | y += g * x * y | y -= h * y | y -= i * y * y
+    false winner  1x, scoring problem, intended is +5.30 from it: x += a * x | x += b * x * x | x -= c * x * y | x += d * y | y += e | y -= f * x | y += g * x * y | y -= e * y
+    false winner  1x, scoring problem, intended is +2.88 from it: x += a * x | x += b * x * x | x -= c * x * y | x += d * y * y | y += e | y -= f * x | y += f * x * y | y -= e * y
+lotka_volterra  05%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:1 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.2, worst 0.2
+    false winner  1x, scoring problem, intended is +0.17 from it: x += a | x += b * x | x += c * x * x | x -= d * x * y | y += e * x * y | y -= f * y
+lotka_volterra  10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  20%: solved 19/20 (synonyms 0), search problem 1, scoring problem 0  | #1:19 #2:0 #3:0 #4-10:0 #11+:0 never tried:1
+    false winner  1x, search problem, intended is -2.54 from it: x += a * x | x -= b * x * y | y -= c | y += d * x
+PROCESS ENDED

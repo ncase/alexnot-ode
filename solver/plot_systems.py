@@ -23,6 +23,8 @@ DENSE_SAMPLE_COUNT: int = 6000
 # Past this many samples, dots need to shrink or they'd blot out the truth
 CROWDED_SAMPLE_COUNT: int = 200
 PLOT_SEED: int = 1
+# Faint, so your eye reads the dots first, and can see how sparse the data really is
+LINE_OPACITY: float = 0.15
 
 
 def style_axis(axis: plt.Axes, title: str, time_label: str) -> None:
@@ -35,7 +37,10 @@ def style_axis(axis: plt.Axes, title: str, time_label: str) -> None:
         side.set_visible(False)
     axis.set_xlabel(time_label, fontsize=9, color=MUTED)
     # Above the plot, so the legend can never cover the data
-    axis.legend(frameon=False, fontsize=9, labelcolor=INK, ncols=3, loc='lower left', bbox_to_anchor=(0, 1), borderaxespad=0.1, handlelength=1.2)
+    legend = axis.legend(frameon=False, fontsize=9, labelcolor=INK, ncols=3, loc='lower left', bbox_to_anchor=(0, 1), borderaxespad=0.1, handlelength=1.2)
+    # The legend's lines stay solid, or you couldn't tell which color's which
+    for legend_line in legend.get_lines():
+        legend_line.set_alpha(1)
 
 
 figure, axes = plt.subplots(4, 2, figsize=(11, 13), facecolor=SURFACE, constrained_layout=True)
@@ -47,7 +52,7 @@ for axis, system in zip(axes.flat, SYSTEMS):
     is_crowded: bool = system.sample_count > CROWDED_SAMPLE_COUNT
     for column, (name, meaning) in enumerate(zip(system.variable_names, system.variable_meanings)):
         label: str = name if name == meaning else f'{name} = {meaning}'
-        axis.plot(dense_times, dense_states[:, column], color=COLORS[column], linewidth=1 if is_crowded else 2, zorder=2, label=label)
+        axis.plot(dense_times, dense_states[:, column], color=COLORS[column], linewidth=1 if is_crowded else 2, alpha=LINE_OPACITY, zorder=2, label=label)
         axis.scatter(times, states[:, column], s=4 if is_crowded else 26, color=COLORS[column], edgecolors=SURFACE, linewidths=0 if is_crowded else 0.8, zorder=3)
     title: str = f'{system.name}  ({system.sample_count} samples, {system.noise_fraction:.0%} noise)\n{system.equation}'
     style_axis(axis, title, 'time')
@@ -56,7 +61,7 @@ for axis, system in zip(axes.flat, SYSTEMS):
 lynx_hare_axis: plt.Axes = axes.flat[len(SYSTEMS)]
 years, pelts = load_lynx_hare()
 for column, name in enumerate(['x = hare', 'y = lynx']):
-    lynx_hare_axis.plot(years, pelts[:, column], color=COLORS[column], linewidth=1, zorder=2, label=name)
+    lynx_hare_axis.plot(years, pelts[:, column], color=COLORS[column], linewidth=1, alpha=LINE_OPACITY, zorder=2, label=name)
     lynx_hare_axis.scatter(years, pelts[:, column], s=26, color=COLORS[column], edgecolors=SURFACE, linewidths=0.8, zorder=3)
 style_axis(lynx_hare_axis, f'Real lynx & hare  ({len(years)} yearly samples)\nThousands of pelts (no known truth, lines just connect the dots)', 'year')
 lynx_hare_axis.set_xticks(np.arange(1900, 1921, 5))

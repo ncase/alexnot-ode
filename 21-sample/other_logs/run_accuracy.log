@@ -1,0 +1,164 @@
+started 17:03:01
+ACCURACY 30 at 17:03:01
+exponential     01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        20%: solved  0/20 (synonyms 0), search problem 0, scoring problem 20  | #1:0 #2:0 #3:3 #4-10:17 #11+:0 never tried:0  behind by median 0.9, worst 1.2
+    false winner 19x, scoring problem, intended is +0.86 from it: x += a
+    false winner  1x, scoring problem, intended is +1.03 from it: (blank program)
+logistic        stopping: nothing solved at 20%
+bass            01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+bass            05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+bass            10%: solved 11/20 (synonyms 0), search problem 0, scoring problem 9  | #1:11 #2:5 #3:3 #4-10:1 #11+:0 never tried:0  behind by median 0.2, worst 0.6
+    false winner  7x, scoring problem, intended is +0.23 from it: x += a | x -= a * x * x
+    false winner  2x, scoring problem, intended is +0.38 from it: x += a * x | x -= a * x * x
+bass            20%: solved  0/20 (synonyms 0), search problem 0, scoring problem 20  | #1:0 #2:0 #3:0 #4-10:0 #11+:19 never tried:1  behind by median 1.0, worst 1.3
+    false winner 13x, scoring problem, intended is +1.00 from it: x += a | x -= a * x
+    false winner  4x, scoring problem, intended is +1.16 from it: x += a
+    false winner  3x, scoring problem, intended is +1.02 from it: x += a | x -= a * x * x
+bass            stopping: nothing solved at 20%
+newton          01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            10%: solved 17/20 (synonyms 0), search problem 0, scoring problem 3  | #1:17 #2:3 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.0, worst 0.4
+    false winner  3x, scoring problem, intended is +0.02 from it: x += a | x -= b * x
+drag            20%: solved  6/20 (synonyms 0), search problem 0, scoring problem 14  | #1:6 #2:13 #3:0 #4-10:1 #11+:0 never tried:0  behind by median 0.1, worst 0.5
+    false winner 14x, scoring problem, intended is +0.14 from it: x += a | x -= b * x
+spring          01%: solved  6/20 (synonyms 0), search problem 0, scoring problem 14  | #1:6 #2:7 #3:0 #4-10:6 #11+:1 never tried:0  behind by median 0.4, worst 1.3  (top 1 with loose form too: 20)
+    false winner 14x, scoring problem, intended is +0.39 from it: x += a * y | y -= b * x | y -= c * y
+spring          05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+spring          10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+spring          20%: solved 18/20 (synonyms 0), search problem 0, scoring problem 2  | #1:18 #2:2 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.1, worst 0.1  (top 1 with loose form too: 18)
+    false winner  2x, scoring problem, intended is +0.11 from it: x += y | y -= a * x
+lotka_volterra  01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+sir             01%: solved 19/20 (synonyms 0), search problem 1, scoring problem 0  | #1:19 #2:0 #3:0 #4-10:0 #11+:0 never tried:1  (top 1 with loose form too: 19)
+    false winner  1x, search problem, intended is -1.60 from it: x -= a * x * y | y -= b | y += b * x | y += a * x * y | y += b * z | z += b * y
+sir             05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+sir             10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+sir             20%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:0 #3:0 #4-10:1 #11+:0 never tried:0  behind by median 0.1, worst 0.1  (top 1 with loose form too: 19)
+    false winner  1x, scoring problem, intended is +0.07 from it: x -= a * x * y | y += b * x * y | y -= c * y | z -= a * x * z | z += (a * b) * y
+ACCURACY 40 at 17:06:35
+exponential     01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        20%: solved  0/20 (synonyms 0), search problem 0, scoring problem 20  | #1:0 #2:7 #3:4 #4-10:9 #11+:0 never tried:0  behind by median 0.7, worst 1.0
+    false winner 20x, scoring problem, intended is +0.66 from it: x += a
+logistic        stopping: nothing solved at 20%
+bass            01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+bass            05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+bass            10%: solved 18/20 (synonyms 0), search problem 0, scoring problem 2  | #1:18 #2:2 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.2, worst 0.4
+    false winner  1x, scoring problem, intended is +0.00 from it: x += a | x -= a * x * x
+    false winner  1x, scoring problem, intended is +0.39 from it: x += a * x | x -= a * x * x
+bass            20%: solved  0/20 (synonyms 0), search problem 0, scoring problem 20  | #1:0 #2:0 #3:0 #4-10:2 #11+:17 never tried:1  behind by median 0.8, worst 1.1
+    false winner 11x, scoring problem, intended is +0.92 from it: x += a | x -= a * x
+    false winner  7x, scoring problem, intended is +0.82 from it: x += a | x -= a * x * x
+    false winner  2x, scoring problem, intended is +0.92 from it: x += a * x | x -= a * x * x
+bass            stopping: nothing solved at 20%
+newton          01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            10%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:0 #3:0 #4-10:1 #11+:0 never tried:0  behind by median 0.4, worst 0.4
+    false winner  1x, scoring problem, intended is +0.42 from it: x += a | x -= b * x
+drag            20%: solved  8/20 (synonyms 0), search problem 0, scoring problem 12  | #1:8 #2:11 #3:0 #4-10:1 #11+:0 never tried:0  behind by median 0.2, worst 0.6
+    false winner 12x, scoring problem, intended is +0.16 from it: x += a | x -= b * x
+spring          01%: solved  3/20 (synonyms 0), search problem 0, scoring problem 17  | #1:3 #2:6 #3:0 #4-10:9 #11+:2 never tried:0  behind by median 0.5, worst 1.9  (top 1 with loose form too: 20)
+    false winner 17x, scoring problem, intended is +0.47 from it: x += a * y | y -= b * x | y -= c * y
+spring          05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+spring          10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+spring          20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0  (top 1 with loose form too: 20)
+lotka_volterra  01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+sir             01%: solved 19/20 (synonyms 0), search problem 1, scoring problem 0  | #1:19 #2:0 #3:0 #4-10:0 #11+:0 never tried:1  (top 1 with loose form too: 19)
+    false winner  1x, search problem, intended is -0.69 from it: x -= a * x * y | y += a * x * y | y -= b * y | z += (b - c) * y
+sir             05%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:0 #3:1 #4-10:0 #11+:0 never tried:0  behind by median 0.1, worst 0.1  (top 1 with loose form too: 19)
+    false winner  1x, scoring problem, intended is +0.13 from it: x -= a * x * y | y += (a - b) * y | y -= a * y * y | y -= a * y * z | z += b * y
+sir             10%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:1 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.0, worst 0.0  (top 1 with loose form too: 19)
+    false winner  1x, scoring problem, intended is +0.04 from it: x -= a * x * y | y += a * x * y | y -= b * y | z -= c * x * z | z += d * y
+sir             20%: solved 17/20 (synonyms 0), search problem 0, scoring problem 3  | #1:17 #2:1 #3:0 #4-10:0 #11+:1 never tried:1  behind by median 0.4, worst 0.6  (top 1 with loose form too: 17)
+    false winner  1x, scoring problem, intended is +0.14 from it: x -= a * x * y | y += a * x * y | y -= b * x * z | y -= c * y | z += c * y
+    false winner  1x, scoring problem, intended is +0.63 from it: x -= a * x * y | y += a * x * y | y -= b * y | z -= c * x * z | z += d * y
+    false winner  1x, scoring problem, intended is +0.17 from it: x -= (a + b) * x * y | y += a * x * y | y -= b * y * z | z -= c * x * z | z += b * y
+ACCURACY 50 at 17:10:48
+exponential     01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+exponential     20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+logistic        20%: solved  1/20 (synonyms 0), search problem 0, scoring problem 19  | #1:1 #2:11 #3:1 #4-10:7 #11+:0 never tried:0  behind by median 0.5, worst 0.9
+    false winner 19x, scoring problem, intended is +0.47 from it: x += a
+bass            01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+bass            05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+bass            10%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:1 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.2, worst 0.2
+    false winner  1x, scoring problem, intended is +0.21 from it: x += a * x | x -= a * x * x
+bass            20%: solved  0/20 (synonyms 0), search problem 0, scoring problem 20  | #1:0 #2:0 #3:0 #4-10:5 #11+:14 never tried:1  behind by median 0.8, worst 1.1
+    false winner  8x, scoring problem, intended is +0.92 from it: x += a | x -= a * x
+    false winner  8x, scoring problem, intended is +0.70 from it: x += a | x -= a * x * x
+    false winner  3x, scoring problem, intended is +0.78 from it: x += a * x | x -= a * x * x
+    false winner  1x, scoring problem, intended is +0.40 from it: x += a | x += b * x
+bass            stopping: nothing solved at 20%
+newton          01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+newton          20%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:1 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.0, worst 0.0
+    false winner  1x, scoring problem, intended is +0.03 from it: x += a | x -= b * x * x
+drag            01%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+drag            10%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:0 #3:0 #4-10:1 #11+:0 never tried:0  behind by median 0.5, worst 0.5
+    false winner  1x, scoring problem, intended is +0.48 from it: x += a | x -= b * x
+drag            20%: solved 11/20 (synonyms 0), search problem 0, scoring problem 9  | #1:11 #2:7 #3:0 #4-10:2 #11+:0 never tried:0  behind by median 0.2, worst 0.7
+    false winner  9x, scoring problem, intended is +0.21 from it: x += a | x -= b * x
+spring          01%: solved  1/20 (synonyms 0), search problem 0, scoring problem 19  | #1:1 #2:4 #3:0 #4-10:7 #11+:8 never tried:0  behind by median 0.7, worst 2.6  (top 1 with loose form too: 19)
+    false winner 18x, scoring problem, intended is +0.73 from it: x += a * y | y -= b * x | y -= c * y
+    false winner  1x, scoring problem, intended is +0.35 from it: x += a * y | y -= b * x | y += c * x * x | y -= d * y
+spring          05%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:1 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.3, worst 0.3  (top 1 with loose form too: 19)
+    false winner  1x, scoring problem, intended is +0.28 from it: x += y | y -= a * x | y += b * x * x | y -= c * y
+spring          10%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:0 #3:1 #4-10:0 #11+:0 never tried:0  behind by median 0.2, worst 0.2  (top 1 with loose form too: 19)
+    false winner  1x, scoring problem, intended is +0.24 from it: x += y | y -= a * x | y += b * x * x | y -= c * y
+spring          20%: solved 19/20 (synonyms 0), search problem 0, scoring problem 1  | #1:19 #2:1 #3:0 #4-10:0 #11+:0 never tried:0  behind by median 0.1, worst 0.1  (top 1 with loose form too: 19)
+    false winner  1x, scoring problem, intended is +0.13 from it: x += y | y -= a * x | y += b * x * x | y -= c * y
+lotka_volterra  01%: solved 15/20 (synonyms 0), search problem 0, scoring problem 5  | #1:15 #2:2 #3:0 #4-10:3 #11+:0 never tried:0  behind by median 0.3, worst 0.5
+    false winner  2x, scoring problem, intended is +0.48 from it: x += a * x | x += b * x * x | x -= c * x * y | x += d * y * y | y += e * x * y | y -= f * y
+    false winner  2x, scoring problem, intended is +0.20 from it: x += a * x | x -= b * x * y | y -= c * x * x | y += d * x * y | y -= e * y
+    false winner  1x, scoring problem, intended is +0.16 from it: x += a * x | x -= b * x * y | y -= c * x * x | y += d * x * y | y -= e * y | y -= f * y * y
+lotka_volterra  05%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  10%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+lotka_volterra  20%: solved 20/20 (synonyms 0), search problem 0, scoring problem 0  | #1:20 #2:0 #3:0 #4-10:0 #11+:0 never tried:0
+sir             01%: solved 16/20 (synonyms 0), search problem 4, scoring problem 0  | #1:16 #2:0 #3:0 #4-10:0 #11+:0 never tried:4  (top 1 with loose form too: 16)
+    false winner  2x, search problem, intended is -0.20 from it: x -= a * x * y | y += a * x * y | y -= b * y | z += b | z -= b * x | z -= b * z
+    false winner  1x, search problem, intended is -3.23 from it: x -= a * x * y | y += b * x * y | y -= c * y | z += d | z += e * x | z += f * y | z += g * z
+    false winner  1x, search problem, intended is -2.00 from it: x -= a * x * y | y += b * x * y | y -= c * y * y | y -= d * y * z | z += e * y
+sir             05%: solved 17/20 (synonyms 0), search problem 1, scoring problem 2  | #1:17 #2:0 #3:1 #4-10:0 #11+:1 never tried:1  behind by median 0.3, worst 0.4  (top 1 with loose form too: 17)
+    false winner  1x, scoring problem, intended is +0.42 from it: x -= a * x * y | y += b * y | y -= a * y * y | y -= a * y * z | z += (a - b) * y
+    false winner  1x, scoring problem, intended is +0.14 from it: x -= a * x * y | y += (a - b) * y | y -= a * y * y | y -= a * y * z | z += b * y
+    false winner  1x, search problem, intended is -2.24 from it: x += a | x -= a * x | x -= b * x * y | x -= a * y | x -= a * z | y += b * x * y | y -= (c - a) * y | z -= a | z += a * x | z += c * y | z += a * z
+sir             10%: solved 15/20 (synonyms 0), search problem 0, scoring problem 5  | #1:15 #2:0 #3:3 #4-10:2 #11+:0 never tried:0  behind by median 0.1, worst 0.5  (top 1 with loose form too: 15)
+    false winner  2x, scoring problem, intended is +0.24 from it: x -= a * x * y | y += b * y | y -= a * y * y | y -= a * y * z | z += (a - b) * y
+    false winner  2x, scoring problem, intended is +0.25 from it: x -= a * x * y | y += a * x * y | y -= b * y | z -= c * x * z | z += d * y
+    false winner  1x, scoring problem, intended is +0.11 from it: x -= a * x * y | y += a * x * y | y -= b * x * z | y -= c * y | z += c * y
+sir             20%: solved 16/20 (synonyms 0), search problem 0, scoring problem 4  | #1:16 #2:0 #3:1 #4-10:1 #11+:0 never tried:2  behind by median 0.4, worst 0.5  (top 1 with loose form too: 16)
+    false winner  1x, scoring problem, intended is +0.23 from it: x -= a * x * y | y += b * y | y -= a * y * y | y -= a * y * z | z += (a - b) * y
+    false winner  1x, scoring problem, intended is +0.50 from it: x -= a * x * y | y += a * x * y | y -= b * x * z | y -= c * y | z += c * y
+    false winner  1x, scoring problem, intended is +1.24 from it: x -= a * x * y | y += a * x * y | y -= b * y | z -= c * x * z | z += d * y
+    false winner  1x, scoring problem, intended is +0.64 from it: x -= (a + b) * x * y | y += a * x * y | y -= b * y * z | z -= c * x * z | z += b * y
+ALL DONE 17:15:49

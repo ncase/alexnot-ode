@@ -21,6 +21,8 @@ MUTED: str = '#8a8a84'
 GRID: str = '#e8e7e2'
 # Dense enough that the truth looks like a smooth line
 DENSE_SAMPLE_COUNT: int = 2000
+# Faint, so your eye reads the dots first, and can see how sparse the data really is
+LINE_OPACITY: float = 0.15
 
 
 def make_demo(
@@ -61,7 +63,7 @@ def plot_level(name: str, variable_names: list[str], demos: list[dict], noise_fr
     figure, axes = plt.subplots(1, len(demos), figsize=(figure_width, 3.8), facecolor=SURFACE, constrained_layout=True, squeeze=False)
     for axis, demo in zip(axes[0], demos):
         for column, variable in enumerate(variable_names):
-            axis.plot(demo['dense_times'], demo['dense_states'][:, column], color=COLORS[column], linewidth=2, zorder=2, label=variable)
+            axis.plot(demo['dense_times'], demo['dense_states'][:, column], color=COLORS[column], linewidth=2, alpha=LINE_OPACITY, zorder=2, label=variable)
             axis.scatter(demo['times'], demo['states'][:, column], s=26, color=COLORS[column], edgecolors=SURFACE, linewidths=0.8, zorder=3)
         axis.set_title(demo['equation'], loc='left', fontsize=10.5, color=INK, pad=20)
         axis.set_facecolor(SURFACE)
@@ -72,7 +74,10 @@ def plot_level(name: str, variable_names: list[str], demos: list[dict], noise_fr
             side.set_visible(False)
         axis.set_xlabel('time', fontsize=9, color=MUTED)
         # Above the plot, so the legend can never cover the data
-        axis.legend(frameon=False, fontsize=9, labelcolor=INK, ncols=3, loc='lower left', bbox_to_anchor=(0, 1), borderaxespad=0.1, handlelength=1.2)
+        legend = axis.legend(frameon=False, fontsize=9, labelcolor=INK, ncols=3, loc='lower left', bbox_to_anchor=(0, 1), borderaxespad=0.1, handlelength=1.2)
+        # The legend's lines stay solid, or you couldn't tell which color's which
+        for legend_line in legend.get_lines():
+            legend_line.set_alpha(1)
     noise_label: str = 'real data' if noise_fraction is None else f'{noise_fraction:.0%} noise'
     figure.suptitle(f'{name}: {len(demo["times"])} samples per demo, {noise_label}', x=0.01, ha='left', fontsize=13, color=INK)
     PLOTS_PATH.mkdir(parents=True, exist_ok=True)

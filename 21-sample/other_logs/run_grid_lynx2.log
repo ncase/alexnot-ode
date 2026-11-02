@@ -1,0 +1,80 @@
+298 settings
+50 done, 10 hits so far
+100 done, 23 hits so far
+150 done, 39 hits so far
+200 done, 51 hits so far
+250 done, 56 hits so far
+
+56 of 298 settings make Lotka-Volterra win:
+  accuracy 2.0  token 0.0  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 2.0  token 0.05 parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 2.0  token 0.1  parameter 0.0  snapped a = 0.647 b = 0.030 c = 0.028
+  accuracy 2.0  token 0.1  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 2.0  token 0.1  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 2.0  token 0.1  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 2.0  token 0.1  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 2.0  token 0.2  parameter 0.0  snapped a = 0.647 b = 0.030 c = 0.028
+  accuracy 2.0  token 0.2  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.05 parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.05 parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.1  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.1  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.2  parameter 0.0  snapped a = 0.647 b = 0.030 c = 0.028
+  accuracy 3.0  token 0.2  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.2  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.2  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 3.0  token 0.2  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.0  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.05 parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.05 parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.1  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.1  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.2  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.2  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.2  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.2  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.2  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.5  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.5  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 5.0  token 0.5  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.0  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.05 parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.1  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.2  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.2  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.5  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.5  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.5  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.5  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.5  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 7.5  token 0.5  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 0.05 parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 0.5  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 0.5  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 0.5  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 0.5  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 0.5  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 10.0 token 1.0  parameter 0.25 tied    a = 0.618 b = 0.028
+  accuracy 15.0 token 0.5  parameter 8.0  tied    a = 0.618 b = 0.028
+  accuracy 15.0 token 1.0  parameter 0.25 snapped a = 0.647 b = 0.030 c = 0.028
+  accuracy 25.0 token 1.0  parameter 0.5  tied    a = 0.618 b = 0.028
+  accuracy 25.0 token 1.0  parameter 1.0  tied    a = 0.618 b = 0.028
+  accuracy 25.0 token 1.0  parameter 2.0  tied    a = 0.618 b = 0.028
+  accuracy 25.0 token 1.0  parameter 4.0  tied    a = 0.618 b = 0.028
+  accuracy 25.0 token 1.0  parameter 8.0  tied    a = 0.618 b = 0.028
+
+Settings where LV beats the winner but the search missed it: 17
+Most common winners:
+   52x x += a * x | x -= b * x * y | y += b * x * y | y -= y
+   45x (blank program)
+   26x x -= a | x += x | x -= b * x * y | x += (c * d) * y | y += a | y -= c * x | y += b * x * y | y -= d * y
+   17x x -= a | x += x | x -= b * x * y | x += c * y | y += a | y -= d * x | y += b * x * y | y -= e * y
+   17x x -= (a + b) | x += x | x -= c * x * y | x += (b * d) * y | y += a | y -= d * x | y += c * x * y | y -= b * y
+   15x x -= a | x += x | x -= b * x * y | x += (b * c) * y | y += c | y -= d * x | y += b * x * y | y -= (a - c) * y
+   14x x -= (a + b) | x += x | x -= c * x * y | x += (b * d) * y | y += a | y -= b * x | y += c * x * y | y -= d * y
+   12x x += a | x += b * x * x | x -= c * x * y | x += d * y * y | y += e | y -= f * x | y += g * x * y | y -= h * y
+   10x y += a * x * y | y -= y
+    7x x += a | x += b * x | x += c * x * x | x -= (a * c) * x * y | x += c * y * y | y += d | y -= e * x | y += (b * e) * x * y | y -= (b * d) * y
+    6x x += a * x | x -= b * x * y
+    6x x += a | x += (a * b) * x | x += c * x * x | x -= b * x * y | x += c * y * y | y += d | y -= e * x | y += (a * c) * x * y | y -= f * y
+ALL DONE
