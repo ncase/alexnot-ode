@@ -12,8 +12,8 @@ PARENTS_TOP_K: int = 5
 # Two programs whose scores differ by less than this are the same program, spelled differently
 SAME_SCORE_TOLERANCE: float = 1e-5
 # Time limits, in seconds. An unlucky slow level still gets an answer, from whatever got scored in time
-TIME_LIMIT_PER_LEVEL: float = 15.0
-TIME_LIMIT_PER_ROUND: float = 5.0
+TIME_LIMIT_PER_LEVEL: float = 30.0
+TIME_LIMIT_PER_ROUND: float = 10.0
 
 
 @dataclass

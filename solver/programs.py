@@ -20,7 +20,7 @@ SCORE_COEFF_ACCURACY: float = 25.0
 SCORE_COEFF_TOKEN: float = 0.1
 SCORE_COEFF_PARAMETER: float = 0.5
 # The trapezoid step has its own tiny error, up to about 1e-4 of the blank program's. Below this floor, more accuracy earns nothing,
-# otherwise extra terms win on perfect data, just by fitting that error. Noise keeps real errors far above this (3.6e-2 at the lowest)
+# otherwise extra terms win on perfect data, just by fitting that error. Real errors stay above this, even at 1% noise (1.4e-3 at the lowest)
 MSE_FLOOR: float = 1e-3
 
 TIMESERIES_PATH: Path = Path(__file__).parent.parent / 'levels' / 'timeseries'

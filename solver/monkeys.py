@@ -10,14 +10,16 @@ from programs import Demo, Level, PARAMETER_PATTERN, Proposal, ScoredProgram, fl
 
 Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 
-# "Close" only filters what gets proposed, so being generous is safe. The scorer has the final say
-# Two numbers are close if they have the same sign, and the bigger one's under (1 + this) times the smaller one
-CLOSE_FRACTION: float = 0.2
+# Two numbers are close if they have the same sign, and max(a/b, b/a) < 1 + this. The scorer has the final say
+# Being more generous isn't free: more proposals to score means more runs hit the time limits
+CLOSE_FRACTION: float = 0.5
+# What counts as "near zero" depends on how big a parameter's term is, so try a few cutoffs, biggest deletion last
+NEAR_ZERO_CUTOFFS: list[float] = [0.01, 0.03, 0.1]
 RELATIONS: dict[str, Callable[[float, float], float]] = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
 
 
 def _is_close(first: float, second: float) -> bool:
-    return first * second > 0 and max(abs(first), abs(second)) <= (1 + CLOSE_FRACTION) * min(abs(first), abs(second))
+    return first * second > 0 and max(abs(first), abs(second)) < (1 + CLOSE_FRACTION) * min(abs(first), abs(second))
 
 
 def _linear_term_names(variable_names: list[str]) -> list[str]:
@@ -80,6 +82,24 @@ def delete_lines(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
             kept_lines: list[str] = lines[:index] + lines[index + 1:]
             source: str = '\n'.join(kept_lines)
             # Drop any parameter that nothing uses anymore
+            kept_names: set[str] = set(PARAMETER_PATTERN.findall(source))
+            params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name in kept_names} for demo_params in parent.params]
+            proposals.append(Proposal(source, params))
+    return proposals
+
+
+def delete_near_zeros(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+    """Propose removing every line whose parameter is near zero on EVERY demo, all at once. It's like SINDy's thresholding."""
+    proposals: list[Proposal] = []
+    for parent in parents:
+        lines: list[str] = parent.source.splitlines()
+        for cutoff in NEAR_ZERO_CUTOFFS:
+            near_zero: set[str] = {name for name in parent.params[0] if all(abs(demo_params[name]) < cutoff for demo_params in parent.params)}
+            # A relation's other parameter might still matter, so only delete lines with one parameter
+            kept_lines: list[str] = [line for line in lines if not (len(PARAMETER_PATTERN.findall(line)) == 1 and PARAMETER_PATTERN.findall(line)[0] in near_zero)]
+            if len(kept_lines) == len(lines):
+                continue
+            source: str = '\n'.join(kept_lines)
             kept_names: set[str] = set(PARAMETER_PATTERN.findall(source))
             params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name in kept_names} for demo_params in parent.params]
             proposals.append(Proposal(source, params))
@@ -166,4 +186,4 @@ def snap_to_one(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return proposals
 
 
-MONKEYS: list[Monkey] = [add_terms, delete_lines, relate_parameters, snap_to_one, tie_parameters]
+MONKEYS: list[Monkey] = [add_terms, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]

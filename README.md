@@ -1,6 +1,7 @@
 # AlexNot-ODE
 
-> **⚠️ This whole README was written by an LLM, not by Nicky. Nicky has not verified it in detail.** Its reasoning and its design choices are the LLM's unless stated otherwise. Don't treat them as human decisions, or as correct.
+> # 🚨🤖 EVERYTHING IN THIS README IS LLM-GENERATED SPECULATION 🤖🚨
+> **Nicky did not write this, and has not verified it.** Its reasoning and its design choices are the LLM's unless stated otherwise. **Do NOT treat anything here as a human decision, as evidence, or as correct.** Check it against the code and against measurements.
 
 A much simpler cousin of [AlexNot](../AlexNot/), our ARC-AGI program induction solver. It evolves short programs that explain sparse, noisy time-series data as differential equations.
 
@@ -115,7 +116,9 @@ Monkeys propose, and the scorer decides. Each monkey receives the parents, their
 - It also proposes every missing linear term + constant together, and every missing term together.
 - We need both styles (see "Preliminary checks").
 
-**`delete_lines`:** proposes removing each line, one at a time, like AlexNot's `compression.delete_lines`. This replaces "drop small parameters", because raw size is misleading: an essential `x*y` coefficient looks tiny when `x*y` is large.
+**`delete_lines`:** proposes removing each line, one at a time, like AlexNot's `compression.delete_lines`.
+
+**`delete_near_zeros`:** proposes removing every line whose parameter is near zero on every demo, all at once, like SINDy's thresholding. Raw size can mislead, since an essential `x*y` coefficient looks tiny when `x*y` is large, so it tries each of the `NEAR_ZERO_CUTOFFS`, and the scorer decides.
 
 **`snap_to_one`:** when a parameter is close to 1 in absolute value, proposes removing it, so `diff.x += params.a * data.y` becomes `diff.x += data.y`. The sign rewriting covers -1.
 
@@ -134,7 +137,7 @@ diff.x += (params.b - params.a) * data.x
 diff.x -= params.b * data.x * data.x
 ```
 
-"Close" for `snap_to_one`, `tie_parameters` and `relate_parameters` means the same sign, with the bigger number under `1 + CLOSE_FRACTION` times the smaller one. `CLOSE_FRACTION = 0.2` is a starting guess. It only filters proposals, so being generous is safe. The scorer may still accept a coincidence, if the fit barely gets worse, so `relate_parameters` is the monkey to watch for false positives.
+"Close" for `snap_to_one`, `tie_parameters` and `relate_parameters` means the same sign, with `max(a/b, b/a) < 1 + CLOSE_FRACTION`. `CLOSE_FRACTION = 0.5` was picked by Nicky, after a fan on SIR only. It only filters proposals, but generosity isn't free: more proposals means more runs hit the time limits. The scorer may still accept a coincidence, if the fit barely gets worse, so `relate_parameters` is the monkey to watch for false positives.
 
 ## Test data
 
