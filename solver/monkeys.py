@@ -81,11 +81,11 @@ def _propose_big_terms(parents: list[ScoredProgram], level: Level, terms: list[s
     return proposals
 
 
-def add_linear_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+def linear_fit(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return _propose_big_terms(parents, level, _linear_term_names(level.variable_names))
 
 
-def add_quadratic_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+def quadratic_fit(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return _propose_big_terms(parents, level, _quadratic_term_names(level.variable_names))
 
 
@@ -100,7 +100,7 @@ def add_single_terms(parents: list[ScoredProgram], level: Level) -> list[Proposa
     return proposals
 
 
-def delete_interaction_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+def delete_interactions(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     """For each line, propose removing each thing it multiplies together, one at a time: a parameter, a relation, or a data term."""
     proposals: list[Proposal] = []
     for parent in parents:
@@ -232,4 +232,4 @@ def snap_to_one(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return proposals
 
 
-MONKEYS: list[Monkey] = [add_linear_terms, add_quadratic_terms, add_single_terms, delete_interaction_terms, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]
+MONKEYS: list[Monkey] = [linear_fit, quadratic_fit, add_single_terms, delete_interactions, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]
