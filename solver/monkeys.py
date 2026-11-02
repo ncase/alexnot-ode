@@ -6,7 +6,7 @@ from typing import Callable
 
 import numpy as np
 
-from programs import Demo, Level, PARAMETER_PATTERN, Proposal, ScoredProgram, flip_sign, split_line, trapezoid_step
+from programs import Demo, LINE_PATTERN, Level, PARAMETER_PATTERN, Proposal, ScoredProgram, flip_sign, split_line, trapezoid_step
 
 Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 
@@ -52,12 +52,16 @@ def _add_lines(parent: ScoredProgram, new_lines: list[tuple[str, str]]) -> Propo
     return Proposal('\n'.join(lines), params)
 
 
+def _existing_terms(parent: ScoredProgram) -> set[tuple[str, str]]:
+    """The exact (variable, term) pairs a program already has."""
+    return {(split_line(line)[0], split_line(line)[2]) for line in parent.source.splitlines()}
+
+
 def _propose_big_terms(parents: list[ScoredProgram], level: Level, terms: list[str]) -> list[Proposal]:
     """Like SINDy: on each demo, fit all the terms to the residual of every equation. Then, for each cutoff, propose adding the terms above it on just that demo."""
     proposals: list[Proposal] = []
     for parent in parents:
-        # What each equation already has
-        existing: set[tuple[str, str]] = {(split_line(line)[0], split_line(line)[2]) for line in parent.source.splitlines()}
+        existing: set[tuple[str, str]] = _existing_terms(parent)
         for demo, residuals in zip(level.demos, parent.residuals):
             term_columns: np.ndarray = np.column_stack([trapezoid_step(_term_values(term, demo), demo.times) for term in terms])
             residual_columns: np.ndarray = np.column_stack([residuals[variable] for variable in level.variable_names])
@@ -83,6 +87,38 @@ def add_linear_terms(parents: list[ScoredProgram], level: Level) -> list[Proposa
 
 def add_quadratic_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return _propose_big_terms(parents, level, _quadratic_term_names(level.variable_names))
+
+
+def add_single_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+    """Ignoring the data's values, propose adding each possible term to each equation, one at a time. Only += is needed, since the fit picks the sign."""
+    proposals: list[Proposal] = []
+    for parent in parents:
+        existing: set[tuple[str, str]] = _existing_terms(parent)
+        for variable, term in itertools.product(level.variable_names, _quadratic_term_names(level.variable_names)):
+            if (variable, term) not in existing:
+                proposals.append(_add_lines(parent, [(variable, term)]))
+    return proposals
+
+
+def delete_interaction_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+    """For each line, propose removing each thing it multiplies together, one at a time: a parameter, a relation, or a data term."""
+    proposals: list[Proposal] = []
+    for parent in parents:
+        lines: list[str] = parent.source.splitlines()
+        for index, line in enumerate(lines):
+            variable, sign, coefficient, term = LINE_PATTERN.fullmatch(line).groups()
+            things: list[str] = ([coefficient] if coefficient else []) + (term.split(' * ') if term else [])
+            # A line with just one thing would have nothing left. That's delete_lines' job
+            if len(things) < 2:
+                continue
+            for removed in range(len(things)):
+                new_line: str = f'diff.{variable} {sign}= ' + ' * '.join(things[:removed] + things[removed + 1:])
+                source: str = '\n'.join(lines[:index] + [new_line] + lines[index + 1:])
+                # Drop any parameter that nothing uses anymore
+                kept_names: set[str] = set(PARAMETER_PATTERN.findall(source))
+                params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name in kept_names} for demo_params in parent.params]
+                proposals.append(Proposal(source, params))
+    return proposals
 
 
 def delete_lines(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
@@ -196,4 +232,4 @@ def snap_to_one(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return proposals
 
 
-MONKEYS: list[Monkey] = [add_linear_terms, add_quadratic_terms, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]
+MONKEYS: list[Monkey] = [add_linear_terms, add_quadratic_terms, add_single_terms, delete_interaction_terms, delete_lines, delete_near_zeros, relate_parameters, snap_to_one, tie_parameters]
