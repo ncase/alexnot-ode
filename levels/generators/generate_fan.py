@@ -3,6 +3,7 @@ import bass
 import drag
 import exponential
 import logistic
+import lorenz
 import lotka_volterra
 import newton
 import sir
@@ -13,7 +14,7 @@ from common import TIMESERIES_PATH, write_level
 NOISE_FRACTIONS: list[float] = [0.01, 0.05, 0.10, 0.20]
 SEED_COUNT: int = 40
 
-for level_name, module in [('exponential', exponential), ('logistic', logistic), ('bass', bass), ('newton', newton), ('drag', drag), ('spring', spring), ('lotka_volterra', lotka_volterra), ('sir', sir)]:
+for level_name, module in [('exponential', exponential), ('logistic', logistic), ('bass', bass), ('newton', newton), ('drag', drag), ('spring', spring), ('lotka_volterra', lotka_volterra), ('sir', sir), ('lorenz', lorenz)]:
     for noise_fraction in NOISE_FRACTIONS:
         for seed in range(SEED_COUNT):
             output_path = TIMESERIES_PATH / 'fan' / f'{level_name}_noise{noise_fraction * 100:02.0f}_seed{seed:02d}.json'

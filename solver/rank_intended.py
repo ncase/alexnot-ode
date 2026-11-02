@@ -41,12 +41,15 @@ INTENDED_PROGRAMS: dict[str, set[str]] = {
     'spring': {'diff.x += data.y\ndiff.y -= params.a * data.x\ndiff.y -= params.b * data.y'},
     'lotka_volterra': {'diff.x += params.a * data.x\ndiff.x -= params.b * data.x * data.y\ndiff.y += params.c * data.x * data.y\ndiff.y -= params.d * data.y'},
     'sir': {'diff.x -= params.a * data.x * data.y\ndiff.y += params.a * data.x * data.y\ndiff.y -= params.b * data.y\ndiff.z += params.b * data.y'},
+    'lorenz': {'diff.x -= params.a * data.x\ndiff.x += params.a * data.y\ndiff.y += params.b * data.x\ndiff.y -= data.x * data.z\ndiff.y -= data.y\ndiff.z += data.x * data.y\ndiff.z -= params.c * data.z'},
 }
 # The spring with `x' = a * y`: the same structure, with one extra number that fits to about 1
 LOOSE_SPRING: str = 'diff.x += params.a * data.y\ndiff.y -= params.b * data.x\ndiff.y -= params.c * data.y'
 # SIR without its ties: the same structure, with 4 separate rates instead of 2
 LOOSE_SIR: str = 'diff.x -= params.a * data.x * data.y\ndiff.y += params.b * data.x * data.y\ndiff.y -= params.c * data.y\ndiff.z += params.d * data.y'
-LOOSE_PROGRAMS: dict[str, str] = {'spring': LOOSE_SPRING, 'sir': LOOSE_SIR}
+# Lorenz without its tie or its 1s: the same structure, with 7 separate numbers instead of 3
+LOOSE_LORENZ: str = 'diff.x -= params.a * data.x\ndiff.x += params.b * data.y\ndiff.y += params.c * data.x\ndiff.y -= params.d * data.x * data.z\ndiff.y -= params.e * data.y\ndiff.z += params.f * data.x * data.y\ndiff.z -= params.g * data.z'
+LOOSE_PROGRAMS: dict[str, str] = {'spring': LOOSE_SPRING, 'sir': LOOSE_SIR, 'lorenz': LOOSE_LORENZ}
 
 
 def rank_of(population: list[ScoredProgram], intended: set[str]) -> tuple[int | None, float | None, str]:
