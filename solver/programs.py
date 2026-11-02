@@ -190,7 +190,7 @@ def score_program(proposal: Proposal, level: Level) -> ScoredProgram:
             if not np.isfinite(error):
                 raise ValueError('Program predicted a non-finite value')
             blank_error: float = demo.blank_mean_squared_errors[name]
-            variable_costs[name] += len(values) * np.log(max(error, MSE_FLOOR * blank_error) / blank_error) / len(level.demos)
+            variable_costs[name] += np.log(max(error, MSE_FLOOR * blank_error) / blank_error) / len(level.demos)
 
     accuracy_score: float = float(SCORE_COEFF_ACCURACY * sum(variable_costs.values()))
     token_score: float = SCORE_COEFF_TOKEN * len(re.findall(r'\w+', proposal.source))

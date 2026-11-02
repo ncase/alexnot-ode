@@ -1,5 +1,7 @@
 # AlexNot-ODE
 
+> **⚠️ This whole README was written by an LLM, not by Nicky. Nicky has not verified it in detail.** Its reasoning and its design choices are the LLM's unless stated otherwise. Don't treat them as human decisions, or as correct.
+
 A much simpler cousin of [AlexNot](../AlexNot/), our ARC-AGI program induction solver. It evolves short programs that explain sparse, noisy time-series data as differential equations.
 
 **Why it exists:** Universality points for the Nov 9 paper. We want to show that AlexNot's loop (monkeys propose, the scorer selects for compression) carries over from ARC grids to continuous science data, with new monkeys and no change to the loop.
@@ -77,18 +79,16 @@ residual[k] = (data.x[k+1] - data.x[k]) - predicted_step[k]
 Lower is better. The blank program scores exactly 0.
 
 ```python
-total_score = SCORE_COEFF_ACCURACY * (average over demos of (sum over variables of  n * log( max(MSE, MSE_FLOOR * blank_MSE) / blank_MSE )))
+total_score = SCORE_COEFF_ACCURACY * (average over demos of (sum over variables of  log( max(MSE, MSE_FLOOR * blank_MSE) / blank_MSE )))
               + SCORE_COEFF_TOKEN * token_count
               + SCORE_COEFF_PARAMETER * parameter_count
 ```
 
-- `MSE` is the mean squared `residual` for that variable, and `n` is its number of steps.
+- `MSE` is the mean squared `residual` for that variable. It's a mean, so accuracy doesn't grow with the number of data points.
 - `blank_MSE` is the same quantity for the blank program.
 - `token_count` counts regex words, so `diff.x += params.a * data.x` is 6 tokens.
 
 **ELI12:** grade each program on how many times smaller it made the error, compared with predicting no change at all. Switching from rabbits to thousands of rabbits changes nothing, and halving the error always earns the same points. So we can read a token's price as "this term has to shrink the error by X%".
-
-**Why it's compression:** halving your typical error saves about one bit per data point. This is basically BIC/MDL.
 
 **Why the floor:** on noiseless data, the error can hit 0, and log(0) is infinite. The floor also stops tiny numerical improvements from earning points. It's set at 1e-3 because on perfect data, the intended programs' errors are the trapezoid step's own, up to about 1e-4 of the blank program's. With a floor of 1e-12, extra terms fit that error and beat the right answer on 6 of 8 levels. At 1e-3, all 8 solve. Noisy data stays far above it: the lowest error we measured from an intended program was 3.6e-2.
 
