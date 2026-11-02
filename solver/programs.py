@@ -14,8 +14,9 @@ from scipy.optimize import least_squares
 
 # Scoring magic constants. Accuracy's averaged across demos, so more demos doesn't outweigh the program's own cost.
 # Tokens & parameters are counted once: it's one program, with the same knobs on every demo. We never penalize a parameter's size.
-# Picked by solver/fan_scoring.py, on exponential & logistic only. A bit more accuracy weight and overfitting starts!
-SCORE_COEFF_ACCURACY: float = 2.0
+# Token & parameter weights were picked by solver/fan_scoring.py, on exponential & logistic only.
+# Accuracy was the best total across all 8 fan levels, of 5, 7.5, 12.5, 25, 37.5 & 50. Lower loses the simple levels, higher loses SIR
+SCORE_COEFF_ACCURACY: float = 37.5
 SCORE_COEFF_TOKEN: float = 0.1
 SCORE_COEFF_PARAMETER: float = 0.5
 # The trapezoid step has its own tiny error, up to about 1e-4 of the blank program's. Below this floor, more accuracy earns nothing,
