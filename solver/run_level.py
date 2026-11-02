@@ -11,6 +11,9 @@ from search import RoundLog, search_population
 
 RESULTS_PATH: Path = Path(__file__).parent.parent / 'levels' / 'results'
 RUNNER_UP_COUNT: int = 4
+# Which noisy copy of a level the traces run on. Needs levels/timeseries/fan/ to exist
+TRACE_NOISE_LABEL: str = '05'
+TRACE_SEED: int = 0
 
 
 def describe_program(program: ScoredProgram) -> str:
@@ -43,16 +46,22 @@ def make_trace(level_name: str, population: list[ScoredProgram], round_logs: lis
     return trace
 
 
-if __name__ == '__main__':
-    level_names: list[str] = sys.argv[1:] or sorted(path.stem for path in TIMESERIES_PATH.glob('*.json'))
+def run_and_save(level_name: str) -> None:
+    """Search one level, save its reasoning trace to levels/results/, and print its winner."""
+    # Levels with made-up data get their 5% noise copy. Real data (lynx_hare) has no copies, and stays as it is
+    noisy_path: Path = TIMESERIES_PATH / 'fan' / f'{level_name}_noise{TRACE_NOISE_LABEL}_seed{TRACE_SEED:02d}.json'
+    level: Level = load_level(noisy_path if noisy_path.exists() else TIMESERIES_PATH / f'{level_name}.json')
+    round_logs: list[RoundLog] = []
+    start_time: float = time.perf_counter()
+    population: list[ScoredProgram] = search_population(level, round_logs)
+    seconds: float = time.perf_counter() - start_time
     RESULTS_PATH.mkdir(exist_ok=True)
-    for level_name in level_names:
-        level: Level = load_level(TIMESERIES_PATH / f'{level_name}.json')
-        round_logs: list[RoundLog] = []
-        start_time: float = time.perf_counter()
-        population: list[ScoredProgram] = search_population(level, round_logs)
-        seconds: float = time.perf_counter() - start_time
-        (RESULTS_PATH / f'{level_name}.md').write_text(make_trace(level_name, population, round_logs, seconds))
-        winner: ScoredProgram = min(population, key=lambda program: program.score)
-        print(f'\n=== {level_name}: {seconds:.2f} seconds, {len(population)} programs, {len(round_logs)} rounds')
-        print(describe_program(winner), end='')
+    (RESULTS_PATH / f'{level_name}.md').write_text(make_trace(level_name, population, round_logs, seconds))
+    winner: ScoredProgram = min(population, key=lambda program: program.score)
+    print(f'\n=== {level_name}: {seconds:.2f} seconds, {len(population)} programs, {len(round_logs)} rounds')
+    print(describe_program(winner), end='', flush=True)
+
+
+if __name__ == '__main__':
+    for level_name in sys.argv[1:] or sorted(path.stem for path in TIMESERIES_PATH.glob('*.json')):
+        run_and_save(level_name)

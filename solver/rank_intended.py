@@ -6,7 +6,7 @@ if it beats the winner, that's a search problem. If it doesn't, that's a scoring
 If it exactly ties the winner, the winner's just another spelling of the same equation. That's a synonym, which counts as solved.
 Every winner that isn't the intended program gets printed, so a human can judge it.
 
-Goes up through noise levels in order, and stops at the first one where no seed solves.
+Goes up through noise levels in order, and stops at the first one where no seed solves. Then updates levels/results/ for the levels it tested.
 
 Usage: python solver/rank_intended.py [--levels bass spring] [--fan-path some/folder] [--coeffs 25 0.1 0.5] [--close-fraction 0.5] [--parents 10]
 Needs levels/timeseries/fan/ to exist. (Run levels/generators/generate_fan.py)
@@ -19,6 +19,7 @@ import statistics
 import monkeys
 import programs
 from programs import PARAMETER_PATTERN, TIMESERIES_PATH, Level, Proposal, ScoredProgram, evaluate, load_level
+from run_level import run_and_save
 import search
 from search import SAME_SCORE_TOLERANCE, search_population
 
@@ -137,3 +138,7 @@ if __name__ == '__main__':
                 if solved_count == 0:
                     print(f'{level_name:15s} stopping: nothing solved at {noise_label}%', flush=True)
                     break
+
+    # Keep levels/results/ fresh too, after the pool's done so it gets the whole machine
+    for level_name in arguments.levels:
+        run_and_save(level_name)
