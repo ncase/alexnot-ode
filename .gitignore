@@ -3,3 +3,4 @@ __pycache__/
 .DS_Store
 # 1280 regenerable files. Run levels/generators/generate_fan.py
 levels/timeseries/fan/
+levels/timeseries/fan_samples20/

@@ -30,14 +30,14 @@ def make_demo(
     end_time: float,
     noise_fraction: float,
     rng: np.random.Generator,
-    sample_count: int = DEFAULT_SAMPLE_COUNT,
 ) -> dict:
     """Integrate the true ODE very accurately, sample it, and add noise scaled to each variable's standard deviation."""
     def simulate(count: int) -> tuple[np.ndarray, np.ndarray]:
         times: np.ndarray = np.linspace(0, end_time, count)
         return times, solve_ivp(derivative, (0, end_time), start, t_eval=times, rtol=1e-10, atol=1e-12).y.T
 
-    times, states = simulate(sample_count)
+    # Read here, not as a default argument, so generate_fan.py can change it
+    times, states = simulate(DEFAULT_SAMPLE_COUNT)
     noisy_states: np.ndarray = states + rng.normal(0, 1, states.shape) * noise_fraction * states.std(axis=0)
     dense_times, dense_states = simulate(DENSE_SAMPLE_COUNT)
     return {'equation': equation, 'times': times, 'states': noisy_states, 'dense_times': dense_times, 'dense_states': dense_states}
