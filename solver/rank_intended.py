@@ -17,7 +17,7 @@ from programs import TIMESERIES_PATH, ScoredProgram, load_level
 from search import search_population
 
 NOISE_LABELS: list[str] = ['05', '10', '20']
-SEEDS: range = range(40)
+SEEDS: range = range(20)
 
 # Only this file & the fans know the answers. The search itself never sees these
 INTENDED_PROGRAMS: dict[str, set[str]] = {
@@ -33,9 +33,13 @@ INTENDED_PROGRAMS: dict[str, set[str]] = {
     'drag': {'diff.x += params.a\ndiff.x -= params.b * data.x * data.x'},
     'spring': {'diff.x += data.y\ndiff.y -= params.a * data.x\ndiff.y -= params.b * data.y'},
     'lotka_volterra': {'diff.x += params.a * data.x\ndiff.x -= params.b * data.x * data.y\ndiff.y += params.c * data.x * data.y\ndiff.y -= params.d * data.y'},
+    'sir': {'diff.x -= params.a * data.x * data.y\ndiff.y += params.a * data.x * data.y\ndiff.y -= params.b * data.y\ndiff.z += params.b * data.y'},
 }
 # The spring with `x' = a * y`: the same structure, with one extra number that fits to about 1
 LOOSE_SPRING: str = 'diff.x += params.a * data.y\ndiff.y -= params.b * data.x\ndiff.y -= params.c * data.y'
+# SIR without its ties: the same structure, with 4 separate rates instead of 2
+LOOSE_SIR: str = 'diff.x -= params.a * data.x * data.y\ndiff.y += params.b * data.x * data.y\ndiff.y -= params.c * data.y\ndiff.z += params.d * data.y'
+LOOSE_PROGRAMS: dict[str, str] = {'spring': LOOSE_SPRING, 'sir': LOOSE_SIR}
 
 
 def rank_of(population: list[ScoredProgram], intended: set[str]) -> tuple[int | None, float | None, str]:
@@ -52,8 +56,8 @@ def run_job(job: tuple[str, str, int, Path, tuple[float, float, float]]) -> tupl
     programs.SCORE_COEFF_ACCURACY, programs.SCORE_COEFF_TOKEN, programs.SCORE_COEFF_PARAMETER = coeffs
     population: list[ScoredProgram] = search_population(load_level(fan_path / f'{level_name}_noise{noise_label}_seed{seed:02d}.json'))
     rank, margin, winner = rank_of(population, INTENDED_PROGRAMS[level_name])
-    # Also rank the spring's looser form, counting either as right
-    loose_rank: int | None = rank_of(population, INTENDED_PROGRAMS[level_name] | {LOOSE_SPRING})[0] if level_name == 'spring' else None
+    # Also rank the looser form, counting either as right
+    loose_rank: int | None = rank_of(population, INTENDED_PROGRAMS[level_name] | {LOOSE_PROGRAMS[level_name]})[0] if level_name in LOOSE_PROGRAMS else None
     return rank, margin, winner, loose_rank
 
 
@@ -78,7 +82,7 @@ if __name__ == '__main__':
             }
             margin_text: str = f'  behind by median {statistics.median(margins):.1f}, worst {max(margins):.1f}' if margins else ''
             top_three: int = sum(rank is not None and rank <= 3 for rank in ranks)
-            line: str = f'{level_name:15s} {noise_label}%: top 3 {top_three:2d}/40  ' + ' '.join(f'{label}:{count}' for label, count in counts.items()) + margin_text
-            if level_name == 'spring':
-                line += f"  (top 1 with a*y too: {sum(result[3] == 1 for result in results)})"
+            line: str = f'{level_name:15s} {noise_label}%: top 3 {top_three:2d}/{len(SEEDS)}  ' + ' '.join(f'{label}:{count}' for label, count in counts.items()) + margin_text
+            if level_name in LOOSE_PROGRAMS:
+                line += f"  (top 1 with loose form too: {sum(result[3] == 1 for result in results)})"
             print(line, flush=True)

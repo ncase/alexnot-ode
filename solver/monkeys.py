@@ -6,7 +6,7 @@ from typing import Callable
 
 import numpy as np
 
-from programs import Demo, Level, PARAMETER_PATTERN, Proposal, ScoredProgram, split_line, trapezoid_step
+from programs import Demo, Level, PARAMETER_PATTERN, Proposal, ScoredProgram, flip_sign, split_line, trapezoid_step
 
 Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 
@@ -81,12 +81,12 @@ def delete_lines(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return proposals
 
 
-def _relation_is_close(target: str, first: str, second: str, symbol: str, all_params: list[dict[str, float]]) -> bool:
-    """Is target ≈ first (symbol) second, on EVERY demo? A coincidence on one demo shouldn't count."""
+def _relation_is_close(target: str, first: str, second: str, symbol: str, sign: int, all_params: list[dict[str, float]]) -> bool:
+    """Is target ≈ sign * (first (symbol) second), on EVERY demo? A coincidence on one demo shouldn't count."""
     for demo_params in all_params:
         if symbol == '/' and demo_params[second] == 0:
             return False
-        if abs(demo_params[target] - RELATIONS[symbol](demo_params[first], demo_params[second])) > CLOSE_FRACTION * abs(demo_params[target]):
+        if abs(demo_params[target] - sign * RELATIONS[symbol](demo_params[first], demo_params[second])) > CLOSE_FRACTION * abs(demo_params[target]):
             return False
     return True
 
@@ -105,9 +105,35 @@ def relate_parameters(parents: list[ScoredProgram], level: Level) -> list[Propos
                 # a + b is the same as b + a, so only try one order of those
                 if symbol in '+*' and first > second:
                     continue
-                if _relation_is_close(target, first, second, symbol, parent.params):
-                    source: str = target_pattern.sub(f'(params.{first} {symbol} params.{second})', parent.source)
-                    params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name != target} for demo_params in parent.params]
+                # A sign of -1 means target ≈ -(a + b), which gets written by flipping the line to `-= (a + b)`.
+                # No -1 for subtraction, since -(a - b) is just (b - a), which the other order already covers
+                for sign in [1] if symbol == '-' else [1, -1]:
+                    if _relation_is_close(target, first, second, symbol, sign, parent.params):
+                        lines: list[str] = [flip_sign(line) if sign == -1 and target_pattern.search(line) else line for line in parent.source.splitlines()]
+                        source: str = target_pattern.sub(f'(params.{first} {symbol} params.{second})', '\n'.join(lines))
+                        params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name != target} for demo_params in parent.params]
+                        proposals.append(Proposal(source, params))
+    return proposals
+
+
+def tie_parameters(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
+    """When two parameters are close in size on ANY demo, propose making them one parameter. If that's with opposite signs, the replaced one's lines flip between += and -=.
+
+    We'd rather propose too many: the scorer filters out the ones that don't actually fit.
+    """
+    proposals: list[Proposal] = []
+    for parent in parents:
+        lines: list[str] = parent.source.splitlines()
+        for kept, replaced in itertools.combinations(parent.params[0], 2):
+            replaced_pattern: re.Pattern = re.compile(rf'params\.{replaced}\b')
+            # Tying two parts of one relation gives junk like (a - a)
+            if any(replaced_pattern.search(line) and kept in PARAMETER_PATTERN.findall(line) for line in lines):
+                continue
+            for sign in [1, -1]:
+                if any(abs(demo_params[kept] - sign * demo_params[replaced]) <= CLOSE_FRACTION * abs(demo_params[replaced]) for demo_params in parent.params):
+                    new_lines: list[str] = [flip_sign(line) if sign == -1 and replaced_pattern.search(line) else line for line in lines]
+                    source: str = replaced_pattern.sub(f'params.{kept}', '\n'.join(new_lines))
+                    params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name != replaced} for demo_params in parent.params]
                     proposals.append(Proposal(source, params))
     return proposals
 
@@ -129,4 +155,4 @@ def snap_to_one(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
     return proposals
 
 
-MONKEYS: list[Monkey] = [add_terms, delete_lines, relate_parameters, snap_to_one]
+MONKEYS: list[Monkey] = [add_terms, delete_lines, relate_parameters, snap_to_one, tie_parameters]

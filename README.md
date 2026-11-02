@@ -21,11 +21,15 @@ Evolutionary search over programs, starting from the blank program, which predic
 5. Pick the next parents.
 6. Stop after `EVO_MAX_GENERATIONS` rounds, or after `EVO_EARLY_STOP_COUNTDOWN` rounds without improvement.
 
+**Time limits:** like AlexNot, `TIME_LIMIT_PER_LEVEL` and `TIME_LIMIT_PER_ROUND` cap the search, and it answers with whatever got scored in time. Each round scores its programs in random order, so running out of time doesn't always cut off the same monkey.
+
+**Reasoning traces:** `solver/run_level.py` saves one to `levels/results/` for each level: the winner, 4 runner-ups, the solve time and program count, then every round's parents, with each score split into accuracy, token simplicity and parameter simplicity.
+
 The winner is the best-scoring program ever seen. Proposing, scoring and throwing candidates away is cheap, so monkeys can be generous.
 
-Reused from AlexNot's `search_transform.py`: remembering every tried program, dropping programs that crash (here, also any that produce NaN or infinity), early stopping, and parent islands.
+Reused from AlexNot's `search_transform.py`: remembering every tried program, dropping programs that crash (here, also any that produce NaN or infinity), and early stopping.
 
-**Parents:** the top `PARENTS_TOP_K` programs by total score, plus the best program on each variable (AlexNot's "best on each demo pair" island). Later, we'll ablate the per-variable island to see if it does anything.
+**Parents:** the top `PARENTS_TOP_K` programs by total score, skipping any whose score is within `SAME_SCORE_TOLERANCE` of the last parent kept, since that's just another spelling. We ablated AlexNot's per-variable island (the best program on each variable): on the 7 levels before SIR, across 20 seeds at each of 3 noise levels, it changed no result, so it's gone.
 
 ## Programs
 
@@ -48,7 +52,7 @@ diff.y += params.d * data.x * data.y
 
 Programs are structure, and parameters are fitted before scoring. So a structure is never judged by unlucky numbers, and monkeys never burn generations nudging decimals.
 
-**Fitting:** `scipy.optimize.least_squares`, warm-started from the parent's parameters (new parameters start at 0). It fits all equations together, because a tied parameter spans several equations. Each variable's residuals are divided by the blank program's root-mean-square error, so large variables can't dominate a tied fit.
+**Fitting:** nearly every program is linear in its parameters, so we nudge each parameter once to measure its effect, then solve for the best values directly with one linear least-squares solve. Only `a * b` and `a / b` relations need the slower `scipy.optimize.least_squares`, warm-started from the parent's parameters. It fits all equations together, because a tied parameter spans several equations. Each variable's residuals are divided by the blank program's root-mean-square error, so large variables can't dominate a tied fit.
 
 **Signs:** the fit is unrestricted. After fitting, a negative parameter gets rewritten as a positive one, flipping `+=` and `-=` on every line that uses it. That way the final program reads naturally, and `+= -a` and `-= a` can't become duplicates. (We may revisit the details during implementation.)
 
@@ -65,7 +69,7 @@ residual[k] = (data.x[k+1] - data.x[k]) - predicted_step[k]
 
 - There's no chicken-and-egg problem. A parent's predictions already exist, and any candidate term can be computed directly from the data.
 - The search needs no x-dot estimates. The blank program's residual is just the raw change between samples.
-- It's linear in the parameters of most programs. `relate_parameters` can break that (`params.a * params.b`), but `least_squares` handles it either way.
+- It's linear in the parameters of most programs, which makes fitting a single solve. `relate_parameters` can break that (`params.a * params.b`), and those programs use `least_squares`.
 - Why not Euler? See "Preliminary checks" below.
 
 ## Scoring
@@ -115,14 +119,14 @@ Monkeys propose, and the scorer decides. Each monkey receives the parents, their
 
 **`snap_to_one`:** when a parameter is close to 1 in absolute value, proposes removing it, so `diff.x += params.a * data.y` becomes `diff.x += data.y`. The sign rewriting covers -1.
 
-**`tie_parameters`:** when two parameters are close in absolute value, proposes making them one parameter. SIR needs this, because the flow out of Susceptible has to exactly match the flow into Infected:
+**`tie_parameters`:** when two parameters are close in absolute value on any demo, proposes making them one parameter, flipping the replaced one's lines if their signs are opposite. It only refuses to tie two parts of one relation, like `a - a`. Everything else is left for the scorer to filter. SIR needs this, because the flow out of Susceptible has to exactly match the flow into Infected:
 
 ```python
 diff.x -= params.a * data.x * data.y
 diff.y += params.a * data.x * data.y
 ```
 
-**`relate_parameters`:** when one parameter is close to the sum, difference, product or ratio of two others, proposes replacing it with that expression. That's one less parameter to pay for, at the price of a few more tokens. Bass needs this for `q - p`, and Michaelis-Menten needs it for `k₂ + k₃`:
+**`relate_parameters`:** when one parameter is close to the sum, difference, product or ratio of two others (or the negative of a sum, product or ratio) on every demo, proposes replacing it with that expression. That's one less parameter to pay for, at the price of a few more tokens. Bass needs this for `q - p`, and Michaelis-Menten needs it for `k₂ + k₃`:
 
 ```python
 diff.x += params.a
@@ -147,7 +151,7 @@ Coefficients are common textbook-style values where they exist, chosen to avoid 
 3. **Logistic growth:** `x' = 0.8x - 0.08x²` (r = 0.8, K = 10), start 0.5, time 0–12
 4. **Damped spring:** `x' = y`, `y' = -4x - 0.4y` (k = 4, c = 0.4, m = 1), start (1, 0), time 0–12
 5. **Lotka-Volterra:** `x' = x - 0.1xy`, `y' = 0.075xy - 1.5y`, start (10, 5), time 0–13 (two cycles)
-6. **SIR:** `x' = -0.5xy`, `y' = 0.5xy - 0.1y`, `z' = 0.1y`, start (0.99, 0.01, 0), time 0–60
+6. **SIR:** `x' = -βxy`, `y' = βxy - γy`, `z' = γy`. Three demos, (β, γ, start, end time): (0.5, 0.1, (0.99, 0.01, 0), 60), (0.3, 0.05, (0.95, 0.05, 0), 100), (0.8, 0.25, (0.98, 0.02, 0), 35)
 7. **Lorenz (stretch):** σ = 10, ρ = 28, β = 8/3, start (1, 1, 1), time 0–30, 1,500 samples
 
 **All variables are observed.** For the damped spring, that means velocity is measured directly. It's a cheat, and the paper will admit it. In general, `y' = a*x + b*y` has `a = -k/m` and `b = -c/m`.

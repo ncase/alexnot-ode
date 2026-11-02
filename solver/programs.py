@@ -3,10 +3,11 @@
 A level has several demos. One program has to explain all of them, but gets its own fitted parameters on each demo.
 """
 from dataclasses import dataclass, field
+import functools
 import json
 from pathlib import Path
 import re
-from types import SimpleNamespace
+from types import CodeType, SimpleNamespace
 
 import numpy as np
 from scipy.optimize import least_squares
@@ -25,6 +26,7 @@ TIMESERIES_PATH: Path = Path(__file__).parent.parent / 'levels' / 'timeseries'
 # or `diff.x += data.y` with no parameter at all
 LINE_PATTERN: re.Pattern = re.compile(r'diff\.(\w+) ([+-])= (?:(params\.\w+|\(params\.\w+ [-+*/] params\.\w+\))(?: \* )?)?(.*)')
 PARAMETER_PATTERN: re.Pattern = re.compile(r'params\.(\w+)')
+NONLINEAR_RELATION_PATTERN: re.Pattern = re.compile(r'params\.\w+ [*/] params\.\w+')
 
 
 def trapezoid_step(values: np.ndarray, times: np.ndarray) -> np.ndarray:
@@ -37,13 +39,15 @@ class Demo:
     times: np.ndarray
     states: np.ndarray  # Shaped (time, variable)
     variable_names: list[str]
+    state_changes: dict[str, np.ndarray] = field(init=False)  # How far each variable really moved, over each time step
     blank_mean_squared_errors: dict[str, float] = field(init=False)
+    data: SimpleNamespace = field(init=False)  # What programs read from. Shared by every run, since programs only write to diff
 
     def __post_init__(self) -> None:
+        self.state_changes = {name: np.diff(self.states[:, column]) for column, name in enumerate(self.variable_names)}
         # The blank program predicts no change, so its error is just the raw change between samples
-        self.blank_mean_squared_errors = {
-            name: float(np.mean(np.diff(self.states[:, column])**2)) for column, name in enumerate(self.variable_names)
-        }
+        self.blank_mean_squared_errors = {name: float(np.mean(changes**2)) for name, changes in self.state_changes.items()}
+        self.data = SimpleNamespace(**{name: self.states[:, column] for column, name in enumerate(self.variable_names)})
 
 
 @dataclass
@@ -70,9 +74,13 @@ class ScoredProgram:
     source: str
     params: list[dict[str, float]]  # Best-fit values, one dict per demo
     score: float
-    variable_costs: dict[str, float]  # Accuracy cost on each variable, averaged over demos. For choosing parents
+    variable_costs: dict[str, float]  # Accuracy cost on each variable, averaged over demos
     predictions: list[dict[str, np.ndarray]]  # One per demo: the program's diff at each data point
     residuals: list[dict[str, np.ndarray]]  # One per demo: real step minus predicted step, for each time step
+    # The score's three parts, added up. For the reasoning trace
+    accuracy_score: float
+    token_score: float
+    parameter_score: float
 
 
 def split_line(line: str) -> tuple[str, str, str]:
@@ -95,7 +103,7 @@ def canonicalize(proposal: Proposal, level: Level) -> Proposal:
     return Proposal(source, [{new_names[old]: demo_params[old] for old in old_names} for demo_params in proposal.params])
 
 
-def _flip_sign(line: str) -> str:
+def flip_sign(line: str) -> str:
     return line.replace('+=', '-=') if '+=' in line else line.replace('-=', '+=')
 
 
@@ -117,23 +125,25 @@ def make_parameters_positive(proposal: Proposal) -> Proposal:
         if all_negative or (mixed_signs and written_with_minus):
             for demo_params in params:
                 demo_params[name] = -demo_params[name]
-            lines = [_flip_sign(line) if name in PARAMETER_PATTERN.findall(line) else line for line in lines]
+            lines = [flip_sign(line) if name in PARAMETER_PATTERN.findall(line) else line for line in lines]
     return Proposal('\n'.join(lines), params)
+
+
+@functools.lru_cache(maxsize=None)
+def compile_program(source: str) -> CodeType:
+    """Fitting runs a program dozens of times, so only turn its text into bytecode once."""
+    return compile(source, '<program>', 'exec')
 
 
 def run_program(source: str, params: dict[str, float], demo: Demo) -> dict[str, np.ndarray]:
     """Run a program on one demo's whole time series at once, and return its diff at each data point."""
-    data: SimpleNamespace = SimpleNamespace(**{name: demo.states[:, column] for column, name in enumerate(demo.variable_names)})
     diff: SimpleNamespace = SimpleNamespace(**{name: np.zeros(len(demo.times)) for name in demo.variable_names})
-    exec(source, {'__builtins__': {}, 'params': SimpleNamespace(**params), 'data': data, 'diff': diff})
+    exec(compile_program(source), {'__builtins__': {}, 'params': SimpleNamespace(**params), 'data': demo.data, 'diff': diff})
     return vars(diff)
 
 
 def get_residuals(predictions: dict[str, np.ndarray], demo: Demo) -> dict[str, np.ndarray]:
-    return {
-        name: np.diff(demo.states[:, column]) - trapezoid_step(predictions[name], demo.times)
-        for column, name in enumerate(demo.variable_names)
-    }
+    return {name: demo.state_changes[name] - trapezoid_step(predictions[name], demo.times) for name in demo.variable_names}
 
 
 def fit_parameters(source: str, start_params: dict[str, float], demo: Demo) -> dict[str, float]:
@@ -147,8 +157,18 @@ def fit_parameters(source: str, start_params: dict[str, float], demo: Demo) -> d
         # Divide by the blank program's error, so big variables can't dominate
         return np.concatenate([residuals[name] / np.sqrt(demo.blank_mean_squared_errors[name]) for name in demo.variable_names])
 
-    fit = least_squares(weighted_residuals, [start_params[name] for name in names])
-    return dict(zip(names, map(float, fit.x)))
+    start: np.ndarray = np.array([start_params[name] for name in names])
+    # A relation like a * b or a / b means crawling towards the answer, the slow way
+    if NONLINEAR_RELATION_PATTERN.search(source):
+        fit = least_squares(weighted_residuals, start)
+        return dict(zip(names, map(float, fit.x)))
+
+    # Otherwise, each parameter's just a volume knob on its terms, so the errors change in a perfectly straight line.
+    # That means we can nudge each knob once to see what it does, then solve for the best settings directly!
+    at_start: np.ndarray = weighted_residuals(start)
+    knob_effects: np.ndarray = np.column_stack([weighted_residuals(start + nudge) - at_start for nudge in np.eye(len(names))])
+    best_change: np.ndarray = np.linalg.lstsq(knob_effects, -at_start, rcond=None)[0]
+    return dict(zip(names, map(float, start + best_change)))
 
 
 def score_program(proposal: Proposal, level: Level) -> ScoredProgram:
@@ -170,10 +190,11 @@ def score_program(proposal: Proposal, level: Level) -> ScoredProgram:
             blank_error: float = demo.blank_mean_squared_errors[name]
             variable_costs[name] += len(values) * np.log(max(error, MSE_FLOOR * blank_error) / blank_error) / len(level.demos)
 
-    token_count: int = len(re.findall(r'\w+', proposal.source))
-    parameter_count: int = len(proposal.params[0])
-    score: float = SCORE_COEFF_ACCURACY * sum(variable_costs.values()) + SCORE_COEFF_TOKEN * token_count + SCORE_COEFF_PARAMETER * parameter_count
-    return ScoredProgram(proposal.source, proposal.params, float(score), variable_costs, predictions, all_residuals)
+    accuracy_score: float = float(SCORE_COEFF_ACCURACY * sum(variable_costs.values()))
+    token_score: float = SCORE_COEFF_TOKEN * len(re.findall(r'\w+', proposal.source))
+    parameter_score: float = SCORE_COEFF_PARAMETER * len(proposal.params[0])
+    score: float = accuracy_score + token_score + parameter_score
+    return ScoredProgram(proposal.source, proposal.params, score, variable_costs, predictions, all_residuals, accuracy_score, token_score, parameter_score)
 
 
 def evaluate(proposal: Proposal, level: Level) -> ScoredProgram:
