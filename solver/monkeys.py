@@ -13,8 +13,8 @@ Monkey = Callable[[list[ScoredProgram], Level], list[Proposal]]
 # Two numbers are close if they have the same sign, and max(a/b, b/a) < 1 + this. The scorer has the final say
 # Being more generous isn't free: more proposals to score means more runs hit the time limits
 CLOSE_FRACTION: float = 0.5
-# What counts as "near zero" depends on how big a parameter's term is, so try a few cutoffs, biggest deletion last
-NEAR_ZERO_CUTOFFS: list[float] = [0.01, 0.03, 0.1]
+# What counts as "near zero" depends on how big a parameter's term is, so try a few cutoffs. Adding & deleting terms both use these
+NEAR_ZERO_CUTOFFS: list[float] = [0.001, 0.01, 0.1]
 RELATIONS: dict[str, Callable[[float, float], float]] = {'+': operator.add, '-': operator.sub, '*': operator.mul}
 
 
@@ -28,8 +28,8 @@ def _linear_term_names(variable_names: list[str]) -> list[str]:
 
 
 def _quadratic_term_names(variable_names: list[str]) -> list[str]:
-    """Each product of two variables, including a variable with itself."""
-    return [f'data.{first} * data.{second}' for first, second in itertools.combinations_with_replacement(variable_names, 2)]
+    """A constant, each variable & each product of two variables, including a variable with itself."""
+    return _linear_term_names(variable_names) + [f'data.{first} * data.{second}' for first, second in itertools.combinations_with_replacement(variable_names, 2)]
 
 
 def _term_values(term: str, demo: Demo) -> np.ndarray:
@@ -40,41 +40,42 @@ def _term_values(term: str, demo: Demo) -> np.ndarray:
     return values
 
 
-def _add_lines(parent: ScoredProgram, variable: str, new_terms: list[str], coefficients: np.ndarray) -> Proposal:
-    """Add terms to one equation, starting them at their coefficients, which are shaped (demo, term)."""
+def _add_lines(parent: ScoredProgram, new_lines: list[tuple[str, str]]) -> Proposal:
+    """Add (variable, term) lines to a program. Their values are just placeholders: the scorer fits every parameter."""
     lines: list[str] = parent.source.splitlines()
-    new_names: list[str] = [f'new{index}' for index in range(len(new_terms))]
-    for name, term in zip(new_names, new_terms):
+    new_names: list[str] = [f'new{index}' for index in range(len(new_lines))]
+    for name, (variable, term) in zip(new_names, new_lines):
         lines.append(f'diff.{variable} += params.{name}' + (f' * {term}' if term else ''))
-    # The fit flips any negative parameters to `-=` later on
-    params: list[dict[str, float]] = [{**parent_params, **dict(zip(new_names, map(float, demo_coefficients)))} for parent_params, demo_coefficients in zip(parent.params, coefficients)]
+    params: list[dict[str, float]] = [{**parent_params, **{name: 1.0 for name in new_names}} for parent_params in parent.params]
     return Proposal('\n'.join(lines), params)
 
 
 def _propose_big_terms(parents: list[ScoredProgram], level: Level, terms: list[str]) -> list[Proposal]:
-    """Like SINDy: on each demo, fit all the missing terms to the residual at once. Then, for each cutoff, propose adding just the terms above it on EVERY demo."""
+    """Like SINDy: on each demo, fit all the terms to the residual of every equation. Then, for each cutoff, propose adding the terms above it on just that demo."""
     proposals: list[Proposal] = []
     for parent in parents:
         # What each equation already has
         existing: set[tuple[str, str]] = {(split_line(line)[0], split_line(line)[2]) for line in parent.source.splitlines()}
-        for variable in level.variable_names:
-            missing: list[str] = [term for term in terms if (variable, term) not in existing]
-            if not missing:
-                continue
-            coefficients: np.ndarray = np.array([
-                np.linalg.lstsq(np.column_stack([trapezoid_step(_term_values(term, demo), demo.times) for term in missing]), residuals[variable], rcond=None)[0]
-                for demo, residuals in zip(level.demos, parent.residuals)
-            ])
+        for demo, residuals in zip(level.demos, parent.residuals):
+            term_columns: np.ndarray = np.column_stack([trapezoid_step(_term_values(term, demo), demo.times) for term in terms])
+            residual_columns: np.ndarray = np.column_stack([residuals[variable] for variable in level.variable_names])
+            # Shaped (term, variable)
+            coefficients: np.ndarray = np.linalg.lstsq(term_columns, residual_columns, rcond=None)[0]
             for cutoff in NEAR_ZERO_CUTOFFS:
-                # Only size counts here, not sign
-                is_big: np.ndarray = np.all(np.abs(coefficients) >= cutoff, axis=0)
-                if is_big.any():
-                    proposals.append(_add_lines(parent, variable, [term for term, big in zip(missing, is_big) if big], coefficients[:, is_big]))
+                # Only size counts here, not sign: the fit flips any negative parameters to `-=` later on.
+                # A term the parent already has gets no second line, since the scorer refits the one it's got
+                new_lines: list[tuple[str, str]] = [
+                    (variable, term)
+                    for column, variable in enumerate(level.variable_names)
+                    for row, term in enumerate(terms)
+                    if abs(coefficients[row, column]) >= cutoff and (variable, term) not in existing
+                ]
+                if new_lines:
+                    proposals.append(_add_lines(parent, new_lines))
     return proposals
 
 
 def add_linear_terms(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
-    """Linear terms & quadratic terms get fitted separately, since similar-looking terms can split the credit between them."""
     return _propose_big_terms(parents, level, _linear_term_names(level.variable_names))
 
 
@@ -98,19 +99,19 @@ def delete_lines(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
 
 
 def delete_near_zeros(parents: list[ScoredProgram], level: Level) -> list[Proposal]:
-    """Propose removing every line whose parameter is near zero on EVERY demo, all at once. It's like SINDy's thresholding."""
+    """Like SINDy's thresholding: on each demo, for each cutoff, propose removing every line whose parameter is near zero on just that demo, all at once."""
     proposals: list[Proposal] = []
     for parent in parents:
         lines: list[str] = parent.source.splitlines()
-        for cutoff in NEAR_ZERO_CUTOFFS:
-            near_zero: set[str] = {name for name in parent.params[0] if all(abs(demo_params[name]) < cutoff for demo_params in parent.params)}
+        for demo_params, cutoff in itertools.product(parent.params, NEAR_ZERO_CUTOFFS):
+            near_zero: set[str] = {name for name, value in demo_params.items() if abs(value) < cutoff}
             # A relation's other parameter might still matter, so only delete lines with one parameter
             kept_lines: list[str] = [line for line in lines if not (len(PARAMETER_PATTERN.findall(line)) == 1 and PARAMETER_PATTERN.findall(line)[0] in near_zero)]
             if len(kept_lines) == len(lines):
                 continue
             source: str = '\n'.join(kept_lines)
             kept_names: set[str] = set(PARAMETER_PATTERN.findall(source))
-            params: list[dict[str, float]] = [{name: value for name, value in demo_params.items() if name in kept_names} for demo_params in parent.params]
+            params: list[dict[str, float]] = [{name: value for name, value in all_params.items() if name in kept_names} for all_params in parent.params]
             proposals.append(Proposal(source, params))
     return proposals
 

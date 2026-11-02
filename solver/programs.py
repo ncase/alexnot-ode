@@ -175,7 +175,7 @@ def fit_parameters(source: str, start_params: dict[str, float], demo: Demo) -> d
 
 
 def score_program(proposal: Proposal, level: Level) -> ScoredProgram:
-    """Lower is better, and the blank program scores exactly 0. See the README for the reasoning."""
+    """Lower is better, and the blank program scores exactly 0."""
     predictions: list[dict[str, np.ndarray]] = []
     all_residuals: list[dict[str, np.ndarray]] = []
     variable_costs: dict[str, float] = {name: 0.0 for name in level.variable_names}
