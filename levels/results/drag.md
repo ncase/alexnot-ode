@@ -1,53 +1,53 @@
 # drag
 
-Solved in 0.02 seconds. 62 programs considered, over 5 rounds.
+Solved in 0.02 seconds. 59 programs considered, over 5 rounds.
 
 ## Winner
 
--- score: -60.58 (accuracy -62.78, token simplicity 1.20, parameter simplicity 1.00) --
+-- score: -24.95 (accuracy -27.15, token simplicity 1.20, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
 
 ## Runner-ups
 
--- score: -60.58 (accuracy -62.78, token simplicity 1.20, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
-
--- score: -59.78 (accuracy -62.78, token simplicity 2.00, parameter simplicity 1.00) --
+-- score: -24.15 (accuracy -27.15, token simplicity 2.00, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x += data.x
 diff.x -= data.x
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
 
--- score: -59.68 (accuracy -62.78, token simplicity 1.60, parameter simplicity 1.50) --
+-- score: -24.05 (accuracy -27.15, token simplicity 1.60, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.828, b = -0.258, c = 0.004
-  Demo 1: a = 5.787, b = 4.139, c = 0.051
-  Demo 2: a = 3.534, b = 0.095, c = 0.019
+  Demo 0: a = 9.846, b = -0.527, c = 0.004
+  Demo 1: a = 0.998, b = 9.167, c = 0.052
+  Demo 2: a = 3.389, b = 0.155, c = 0.019
 
--- score: -59.68 (accuracy -62.78, token simplicity 1.60, parameter simplicity 1.50) --
+-- score: -24.01 (accuracy -26.01, token simplicity 1.00, parameter simplicity 1.00) --
 diff.x += params.a
-diff.x -= params.b
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 0.220
+  Demo 1: a = 41.074, b = 2.742
+  Demo 2: a = 4.397, b = 0.303
+
+-- score: -24.01 (accuracy -27.31, token simplicity 1.80, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x += params.b * data.x
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.909, b = 1.340, c = 0.004
-  Demo 1: a = 26.730, b = 16.805, c = 0.051
-  Demo 2: a = 4.234, b = 0.605, c = 0.019
+  Demo 0: a = 10.292, b = -0.082, c = 0.002
+  Demo 1: a = -6.718, b = 1.451, c = 0.078
+  Demo 2: a = 3.309, b = 0.074, c = 0.023
 
 # The Search
 
-## Round 0 | 0.00s | best score: -59.62
+## Round 0 | 0.00s | best score: -24.01
 
 +5 new programs (5 actually scored)
 * linear_fit: +1
@@ -62,43 +62,43 @@ diff.x -= params.c * data.x * data.x
 
 ### 6 parents for the next round
 
--- score: -59.62 (accuracy -62.92, token simplicity 1.80, parameter simplicity 1.50) --
+-- score: -24.01 (accuracy -26.01, token simplicity 1.00, parameter simplicity 1.00) --
+diff.x += params.a
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 0.220
+  Demo 1: a = 41.074, b = 2.742
+  Demo 2: a = 4.397, b = 0.303
+
+-- score: -24.01 (accuracy -27.31, token simplicity 1.80, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b * data.x
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = -0.041, c = 0.003
-  Demo 1: a = 2.303, b = 0.655, c = 0.062
-  Demo 2: a = 3.485, b = 0.046, c = 0.022
+  Demo 0: a = 10.292, b = -0.082, c = 0.002
+  Demo 1: a = -6.718, b = 1.451, c = 0.078
+  Demo 2: a = 3.309, b = 0.074, c = 0.023
 
--- score: -57.10 (accuracy -59.10, token simplicity 1.00, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x -= params.b * data.x
-  Demo 0: a = 12.021, b = 0.228
-  Demo 1: a = 40.816, b = 2.719
-  Demo 2: a = 4.524, b = 0.316
-
--- score: -21.61 (accuracy -22.91, token simplicity 0.80, parameter simplicity 0.50) --
+-- score: -10.97 (accuracy -12.27, token simplicity 0.80, parameter simplicity 0.50) --
 diff.x += params.a * data.x * data.x
   Demo 0: a = 0.001
   Demo 1: a = -0.039
   Demo 2: a = 0.004
 
--- score: -14.92 (accuracy -15.82, token simplicity 0.40, parameter simplicity 0.50) --
+-- score: -8.07 (accuracy -8.97, token simplicity 0.40, parameter simplicity 0.50) --
 diff.x += params.a
-  Demo 0: a = 3.338
-  Demo 1: a = -12.157
-  Demo 2: a = 1.139
+  Demo 0: a = 3.394
+  Demo 1: a = -12.393
+  Demo 2: a = 1.149
 
--- score: -12.64 (accuracy -13.74, token simplicity 0.60, parameter simplicity 0.50) --
+-- score: -7.37 (accuracy -8.47, token simplicity 0.60, parameter simplicity 0.50) --
 diff.x += params.a * data.x
-  Demo 0: a = 0.051
-  Demo 1: a = -0.891
-  Demo 2: a = 0.061
+  Demo 0: a = 0.053
+  Demo 1: a = -0.902
+  Demo 2: a = 0.063
 
 -- score: 0.00 (accuracy 0.00, token simplicity 0.00, parameter simplicity 0.00) --
 (blank program)
 
-## Round 1 | 0.00s | best score: -60.58
+## Round 1 | 0.00s | best score: -24.95
 
 +14 new programs (14 actually scored)
 * linear_fit: +0
@@ -113,179 +113,84 @@ diff.x += params.a * data.x
 
 ### 10 parents for the next round
 
--- score: -60.58 (accuracy -62.78, token simplicity 1.20, parameter simplicity 1.00) --
+-- score: -24.95 (accuracy -27.15, token simplicity 1.20, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
 
--- score: -59.68 (accuracy -62.78, token simplicity 1.60, parameter simplicity 1.50) --
+-- score: -24.05 (accuracy -27.15, token simplicity 1.60, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.828, b = -0.258, c = 0.004
-  Demo 1: a = 5.787, b = 4.139, c = 0.051
-  Demo 2: a = 3.534, b = 0.095, c = 0.019
+  Demo 0: a = 9.846, b = -0.527, c = 0.004
+  Demo 1: a = 0.998, b = 9.167, c = 0.052
+  Demo 2: a = 3.389, b = 0.155, c = 0.019
 
--- score: -59.62 (accuracy -62.92, token simplicity 1.80, parameter simplicity 1.50) --
+-- score: -24.01 (accuracy -26.01, token simplicity 1.00, parameter simplicity 1.00) --
+diff.x += params.a
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 0.220
+  Demo 1: a = 41.074, b = 2.742
+  Demo 2: a = 4.397, b = 0.303
+
+-- score: -24.01 (accuracy -27.31, token simplicity 1.80, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b * data.x
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = -0.041, c = 0.003
-  Demo 1: a = 2.303, b = 0.655, c = 0.062
-  Demo 2: a = 3.485, b = 0.046, c = 0.022
+  Demo 0: a = 10.292, b = -0.082, c = 0.002
+  Demo 1: a = -6.718, b = 1.451, c = 0.078
+  Demo 2: a = 3.309, b = 0.074, c = 0.023
 
--- score: -57.10 (accuracy -59.10, token simplicity 1.00, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x -= params.b * data.x
-  Demo 0: a = 12.021, b = 0.228
-  Demo 1: a = 40.816, b = 2.719
-  Demo 2: a = 4.524, b = 0.316
-
--- score: -56.00 (accuracy -59.10, token simplicity 1.60, parameter simplicity 1.50) --
+-- score: -22.91 (accuracy -26.01, token simplicity 1.60, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x -= params.b * data.x
 diff.x -= params.c * data.x
-  Demo 0: a = 12.021, b = 0.133, c = 0.095
-  Demo 1: a = 40.816, b = 1.001, c = 1.718
-  Demo 2: a = 4.524, b = 0.124, c = 0.192
+  Demo 0: a = 11.781, b = 0.150, c = 0.070
+  Demo 1: a = 41.074, b = 0.606, c = 2.135
+  Demo 2: a = 4.397, b = 0.103, c = 0.200
 
--- score: -48.17 (accuracy -50.57, token simplicity 1.40, parameter simplicity 1.00) --
+-- score: -21.24 (accuracy -23.64, token simplicity 1.40, parameter simplicity 1.00) --
 diff.x += params.a * data.x
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 0.634, b = 0.013
-  Demo 1: a = 0.847, b = 0.066
-  Demo 2: a = 0.908, b = 0.068
+  Demo 0: a = 0.600, b = 0.012
+  Demo 1: a = 0.888, b = 0.068
+  Demo 2: a = 0.899, b = 0.067
 
--- score: -43.91 (accuracy -46.51, token simplicity 1.60, parameter simplicity 1.00) --
+-- score: -19.05 (accuracy -21.65, token simplicity 1.60, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x += data.x
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = -2.105, b = 0.020
-  Demo 1: a = -1.720, b = 0.069
-  Demo 2: a = 0.458, b = 0.078
+  Demo 0: a = -2.598, b = 0.019
+  Demo 1: a = -1.468, b = 0.070
+  Demo 2: a = 0.375, b = 0.077
 
--- score: -21.61 (accuracy -22.91, token simplicity 0.80, parameter simplicity 0.50) --
+-- score: -10.97 (accuracy -12.27, token simplicity 0.80, parameter simplicity 0.50) --
 diff.x += params.a * data.x * data.x
   Demo 0: a = 0.001
   Demo 1: a = -0.039
   Demo 2: a = 0.004
 
--- score: -14.92 (accuracy -15.82, token simplicity 0.40, parameter simplicity 0.50) --
+-- score: -8.07 (accuracy -8.97, token simplicity 0.40, parameter simplicity 0.50) --
 diff.x += params.a
-  Demo 0: a = 3.338
-  Demo 1: a = -12.157
-  Demo 2: a = 1.139
+  Demo 0: a = 3.394
+  Demo 1: a = -12.393
+  Demo 2: a = 1.149
 
--- score: -14.02 (accuracy -15.82, token simplicity 0.80, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x -= params.b
-  Demo 0: a = 7.794, b = 4.455
-  Demo 1: a = 15.689, b = 27.846
-  Demo 2: a = 2.989, b = 1.850
-
-## Round 2 | 0.01s | best score: -60.58 (stable)
-
-+21 new programs (21 actually scored)
-* linear_fit: +2
-* quadratic_fit: +2
-* add_single_terms: +1
-* delete_interactions: +11
-* delete_lines: +5
-* delete_near_zeros: +0
-* relate_parameters: +0
-* snap_to_one: +0
-* tie_parameters: +0
-
-### 10 parents for the next round
-
--- score: -60.58 (accuracy -62.78, token simplicity 1.20, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
-
--- score: -59.68 (accuracy -62.78, token simplicity 1.60, parameter simplicity 1.50) --
-diff.x += params.a
-diff.x += params.b
-diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.828, b = -0.258, c = 0.004
-  Demo 1: a = 5.787, b = 4.139, c = 0.051
-  Demo 2: a = 3.534, b = 0.095, c = 0.019
-
--- score: -59.62 (accuracy -62.92, token simplicity 1.80, parameter simplicity 1.50) --
-diff.x += params.a
-diff.x += params.b * data.x
-diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = -0.041, c = 0.003
-  Demo 1: a = 2.303, b = 0.655, c = 0.062
-  Demo 2: a = 3.485, b = 0.046, c = 0.022
-
--- score: -58.72 (accuracy -62.92, token simplicity 2.20, parameter simplicity 2.00) --
-diff.x += params.a
-diff.x += params.b
-diff.x += params.c * data.x
-diff.x -= params.d * data.x * data.x
-  Demo 0: a = 10.066, b = -0.020, c = -0.041, d = 0.003
-  Demo 1: a = 1.976, b = 0.327, c = 0.655, d = 0.062
-  Demo 2: a = 3.462, b = 0.023, c = 0.046, d = 0.022
-
--- score: -58.52 (accuracy -62.92, token simplicity 2.40, parameter simplicity 2.00) --
-diff.x += params.a
-diff.x += params.b * data.x
-diff.x -= params.c * data.x
-diff.x -= params.d * data.x * data.x
-  Demo 0: a = 10.046, b = -0.039, c = 0.002, d = 0.003
-  Demo 1: a = 2.303, b = 0.686, c = 0.031, d = 0.062
-  Demo 2: a = 3.485, b = 0.057, c = 0.011, d = 0.022
-
--- score: -57.10 (accuracy -59.10, token simplicity 1.00, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x -= params.b * data.x
-  Demo 0: a = 12.021, b = 0.228
-  Demo 1: a = 40.816, b = 2.719
-  Demo 2: a = 4.524, b = 0.316
-
--- score: -56.70 (accuracy -59.10, token simplicity 1.40, parameter simplicity 1.00) --
-diff.x += params.a
-diff.x += data.x
-diff.x -= params.b * data.x
-  Demo 0: a = 12.021, b = 1.228
-  Demo 1: a = 40.816, b = 3.719
-  Demo 2: a = 4.524, b = 1.316
-
--- score: -56.20 (accuracy -59.10, token simplicity 1.40, parameter simplicity 1.50) --
-diff.x += params.a
-diff.x += params.b
-diff.x -= params.c * data.x
-  Demo 0: a = 11.054, b = 0.967, c = 0.228
-  Demo 1: a = 21.233, b = 19.584, c = 2.719
-  Demo 2: a = 3.981, b = 0.542, c = 0.316
-
--- score: -56.00 (accuracy -59.10, token simplicity 1.60, parameter simplicity 1.50) --
-diff.x += params.a
-diff.x -= params.b * data.x
-diff.x -= params.c * data.x
-  Demo 0: a = 12.021, b = 0.133, c = 0.095
-  Demo 1: a = 40.816, b = 1.001, c = 1.718
-  Demo 2: a = 4.524, b = 0.124, c = 0.192
-
--- score: -48.17 (accuracy -50.57, token simplicity 1.40, parameter simplicity 1.00) --
+-- score: -7.37 (accuracy -8.47, token simplicity 0.60, parameter simplicity 0.50) --
 diff.x += params.a * data.x
-diff.x -= params.b * data.x * data.x
-  Demo 0: a = 0.634, b = 0.013
-  Demo 1: a = 0.847, b = 0.066
-  Demo 2: a = 0.908, b = 0.068
+  Demo 0: a = 0.053
+  Demo 1: a = -0.902
+  Demo 2: a = 0.063
 
-## Round 3 | 0.01s | best score: -60.58 (stable)
+## Round 2 | 0.00s | best score: -24.95 (stable)
 
-+19 new programs (19 actually scored)
-* linear_fit: +0
-* quadratic_fit: +2
++17 new programs (17 actually scored)
+* linear_fit: +1
+* quadratic_fit: +1
 * add_single_terms: +0
-* delete_interactions: +13
+* delete_interactions: +11
 * delete_lines: +4
 * delete_near_zeros: +0
 * relate_parameters: +0
@@ -294,89 +199,182 @@ diff.x -= params.b * data.x * data.x
 
 ### 10 parents for the next round
 
--- score: -60.58 (accuracy -62.78, token simplicity 1.20, parameter simplicity 1.00) --
+-- score: -24.95 (accuracy -27.15, token simplicity 1.20, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
 
--- score: -59.68 (accuracy -62.78, token simplicity 1.60, parameter simplicity 1.50) --
+-- score: -24.05 (accuracy -27.15, token simplicity 1.60, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.828, b = -0.258, c = 0.004
-  Demo 1: a = 5.787, b = 4.139, c = 0.051
-  Demo 2: a = 3.534, b = 0.095, c = 0.019
+  Demo 0: a = 9.846, b = -0.527, c = 0.004
+  Demo 1: a = 0.998, b = 9.167, c = 0.052
+  Demo 2: a = 3.389, b = 0.155, c = 0.019
 
--- score: -59.62 (accuracy -62.92, token simplicity 1.80, parameter simplicity 1.50) --
+-- score: -24.01 (accuracy -26.01, token simplicity 1.00, parameter simplicity 1.00) --
+diff.x += params.a
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 0.220
+  Demo 1: a = 41.074, b = 2.742
+  Demo 2: a = 4.397, b = 0.303
+
+-- score: -24.01 (accuracy -27.31, token simplicity 1.80, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b * data.x
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = -0.041, c = 0.003
-  Demo 1: a = 2.303, b = 0.655, c = 0.062
-  Demo 2: a = 3.485, b = 0.046, c = 0.022
+  Demo 0: a = 10.292, b = -0.082, c = 0.002
+  Demo 1: a = -6.718, b = 1.451, c = 0.078
+  Demo 2: a = 3.309, b = 0.074, c = 0.023
 
--- score: -59.22 (accuracy -62.92, token simplicity 2.20, parameter simplicity 1.50) --
+-- score: -23.61 (accuracy -26.01, token simplicity 1.40, parameter simplicity 1.00) --
 diff.x += params.a
-diff.x += params.b * data.x
-diff.x -= data.x
-diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = 0.959, c = 0.003
-  Demo 1: a = 2.303, b = 1.655, c = 0.062
-  Demo 2: a = 3.485, b = 1.046, c = 0.022
+diff.x += data.x
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 1.220
+  Demo 1: a = 41.074, b = 3.742
+  Demo 2: a = 4.397, b = 1.303
 
--- score: -58.78 (accuracy -62.78, token simplicity 2.00, parameter simplicity 2.00) --
+-- score: -23.11 (accuracy -26.01, token simplicity 1.40, parameter simplicity 1.50) --
 diff.x += params.a
-diff.x += params.b
-diff.x += params.c
-diff.x -= params.d * data.x * data.x
-  Demo 0: a = 9.921, b = -0.165, c = -0.186, d = 0.004
-  Demo 1: a = 4.299, b = 2.650, c = 2.977, d = 0.051
-  Demo 2: a = 3.495, b = 0.056, c = 0.079, d = 0.019
+diff.x -= params.b
+diff.x -= params.c * data.x
+  Demo 0: a = 11.856, b = 0.075, c = 0.220
+  Demo 1: a = 41.377, b = 0.303, c = 2.742
+  Demo 2: a = 4.448, b = 0.051, c = 0.303
 
--- score: -58.72 (accuracy -62.92, token simplicity 2.20, parameter simplicity 2.00) --
+-- score: -23.11 (accuracy -27.31, token simplicity 2.20, parameter simplicity 2.00) --
 diff.x += params.a
 diff.x += params.b
 diff.x += params.c * data.x
 diff.x -= params.d * data.x * data.x
-  Demo 0: a = 10.066, b = -0.020, c = -0.041, d = 0.003
-  Demo 1: a = 1.976, b = 0.327, c = 0.655, d = 0.062
-  Demo 2: a = 3.462, b = 0.023, c = 0.046, d = 0.022
+  Demo 0: a = 10.333, b = -0.041, c = -0.082, d = 0.002
+  Demo 1: a = -7.443, b = 0.726, c = 1.451, d = 0.078
+  Demo 2: a = 3.271, b = 0.037, c = 0.074, d = 0.023
 
--- score: -58.52 (accuracy -62.92, token simplicity 2.40, parameter simplicity 2.00) --
+-- score: -22.91 (accuracy -26.01, token simplicity 1.60, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x -= params.b * data.x
+diff.x -= params.c * data.x
+  Demo 0: a = 11.781, b = 0.150, c = 0.070
+  Demo 1: a = 41.074, b = 0.606, c = 2.135
+  Demo 2: a = 4.397, b = 0.103, c = 0.200
+
+-- score: -22.91 (accuracy -27.31, token simplicity 2.40, parameter simplicity 2.00) --
 diff.x += params.a
 diff.x += params.b * data.x
 diff.x -= params.c * data.x
 diff.x -= params.d * data.x * data.x
-  Demo 0: a = 10.046, b = -0.039, c = 0.002, d = 0.003
-  Demo 1: a = 2.303, b = 0.686, c = 0.031, d = 0.062
-  Demo 2: a = 3.485, b = 0.057, c = 0.011, d = 0.022
+  Demo 0: a = 10.292, b = -0.080, c = 0.001, d = 0.002
+  Demo 1: a = -6.718, b = 1.490, c = 0.039, d = 0.078
+  Demo 2: a = 3.309, b = 0.086, c = 0.011, d = 0.023
 
--- score: -57.10 (accuracy -59.10, token simplicity 1.00, parameter simplicity 1.00) --
+-- score: -21.24 (accuracy -23.64, token simplicity 1.40, parameter simplicity 1.00) --
+diff.x += params.a * data.x
+diff.x -= params.b * data.x * data.x
+  Demo 0: a = 0.600, b = 0.012
+  Demo 1: a = 0.888, b = 0.068
+  Demo 2: a = 0.899, b = 0.067
+
+## Round 3 | 0.01s | best score: -24.95 (stable)
+
++21 new programs (21 actually scored)
+* linear_fit: +0
+* quadratic_fit: +2
+* add_single_terms: +0
+* delete_interactions: +14
+* delete_lines: +5
+* delete_near_zeros: +0
+* relate_parameters: +0
+* snap_to_one: +0
+* tie_parameters: +0
+
+### 10 parents for the next round
+
+-- score: -24.95 (accuracy -27.15, token simplicity 1.20, parameter simplicity 1.00) --
+diff.x += params.a
+diff.x -= params.b * data.x * data.x
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
+
+-- score: -24.05 (accuracy -27.15, token simplicity 1.60, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x += params.b
+diff.x -= params.c * data.x * data.x
+  Demo 0: a = 9.846, b = -0.527, c = 0.004
+  Demo 1: a = 0.998, b = 9.167, c = 0.052
+  Demo 2: a = 3.389, b = 0.155, c = 0.019
+
+-- score: -24.01 (accuracy -26.01, token simplicity 1.00, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x -= params.b * data.x
-  Demo 0: a = 12.021, b = 0.228
-  Demo 1: a = 40.816, b = 2.719
-  Demo 2: a = 4.524, b = 0.316
+  Demo 0: a = 11.781, b = 0.220
+  Demo 1: a = 41.074, b = 2.742
+  Demo 2: a = 4.397, b = 0.303
 
--- score: -56.70 (accuracy -59.10, token simplicity 1.40, parameter simplicity 1.00) --
+-- score: -24.01 (accuracy -27.31, token simplicity 1.80, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x += params.b * data.x
+diff.x -= params.c * data.x * data.x
+  Demo 0: a = 10.292, b = -0.082, c = 0.002
+  Demo 1: a = -6.718, b = 1.451, c = 0.078
+  Demo 2: a = 3.309, b = 0.074, c = 0.023
+
+-- score: -23.61 (accuracy -26.01, token simplicity 1.40, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x += data.x
 diff.x -= params.b * data.x
-  Demo 0: a = 12.021, b = 1.228
-  Demo 1: a = 40.816, b = 3.719
-  Demo 2: a = 4.524, b = 1.316
+  Demo 0: a = 11.781, b = 1.220
+  Demo 1: a = 41.074, b = 3.742
+  Demo 2: a = 4.397, b = 1.303
 
--- score: -56.20 (accuracy -59.10, token simplicity 1.40, parameter simplicity 1.50) --
+-- score: -23.61 (accuracy -27.31, token simplicity 2.20, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x += params.b * data.x
+diff.x -= data.x
+diff.x -= params.c * data.x * data.x
+  Demo 0: a = 10.292, b = 0.918, c = 0.002
+  Demo 1: a = -6.718, b = 2.451, c = 0.078
+  Demo 2: a = 3.309, b = 1.074, c = 0.023
+
+-- score: -23.15 (accuracy -27.15, token simplicity 2.00, parameter simplicity 2.00) --
 diff.x += params.a
 diff.x += params.b
-diff.x -= params.c * data.x
-  Demo 0: a = 11.054, b = 0.967, c = 0.228
-  Demo 1: a = 21.233, b = 19.584, c = 2.719
-  Demo 2: a = 3.981, b = 0.542, c = 0.316
+diff.x += params.c
+diff.x -= params.d * data.x * data.x
+  Demo 0: a = 10.036, b = -0.338, c = -0.379, d = 0.004
+  Demo 1: a = -2.300, b = 5.869, c = 6.595, d = 0.052
+  Demo 2: a = 3.325, b = 0.091, c = 0.128, d = 0.019
 
-## Round 4 | 0.00s | best score: -60.58 (stable)
+-- score: -23.11 (accuracy -26.01, token simplicity 1.40, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x -= params.b
+diff.x -= params.c * data.x
+  Demo 0: a = 11.856, b = 0.075, c = 0.220
+  Demo 1: a = 41.377, b = 0.303, c = 2.742
+  Demo 2: a = 4.448, b = 0.051, c = 0.303
+
+-- score: -23.11 (accuracy -27.31, token simplicity 2.20, parameter simplicity 2.00) --
+diff.x += params.a
+diff.x += params.b
+diff.x += params.c * data.x
+diff.x -= params.d * data.x * data.x
+  Demo 0: a = 10.333, b = -0.041, c = -0.082, d = 0.002
+  Demo 1: a = -7.443, b = 0.726, c = 1.451, d = 0.078
+  Demo 2: a = 3.271, b = 0.037, c = 0.074, d = 0.023
+
+-- score: -22.91 (accuracy -26.01, token simplicity 1.60, parameter simplicity 1.50) --
+diff.x += params.a
+diff.x -= params.b * data.x
+diff.x -= params.c * data.x
+  Demo 0: a = 11.781, b = 0.150, c = 0.070
+  Demo 1: a = 41.074, b = 0.606, c = 2.135
+  Demo 2: a = 4.397, b = 0.103, c = 0.200
+
+## Round 4 | 0.00s | best score: -24.95 (stable)
 
 +13 new programs (13 actually scored)
 * linear_fit: +1
@@ -391,89 +389,86 @@ diff.x -= params.c * data.x
 
 ### 10 parents for the next round
 
--- score: -60.58 (accuracy -62.78, token simplicity 1.20, parameter simplicity 1.00) --
+-- score: -24.95 (accuracy -27.15, token simplicity 1.20, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
 
--- score: -59.78 (accuracy -62.78, token simplicity 2.00, parameter simplicity 1.00) --
+-- score: -24.15 (accuracy -27.15, token simplicity 2.00, parameter simplicity 1.00) --
 diff.x += params.a
 diff.x += data.x
 diff.x -= data.x
 diff.x -= params.b * data.x * data.x
-  Demo 0: a = 9.570, b = 0.004
-  Demo 1: a = 9.926, b = 0.051
-  Demo 2: a = 3.629, b = 0.019
+  Demo 0: a = 9.319, b = 0.004
+  Demo 1: a = 10.165, b = 0.052
+  Demo 2: a = 3.545, b = 0.019
 
--- score: -59.68 (accuracy -62.78, token simplicity 1.60, parameter simplicity 1.50) --
+-- score: -24.05 (accuracy -27.15, token simplicity 1.60, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.828, b = -0.258, c = 0.004
-  Demo 1: a = 5.787, b = 4.139, c = 0.051
-  Demo 2: a = 3.534, b = 0.095, c = 0.019
+  Demo 0: a = 9.846, b = -0.527, c = 0.004
+  Demo 1: a = 0.998, b = 9.167, c = 0.052
+  Demo 2: a = 3.389, b = 0.155, c = 0.019
 
--- score: -59.62 (accuracy -62.92, token simplicity 1.80, parameter simplicity 1.50) --
+-- score: -24.01 (accuracy -26.01, token simplicity 1.00, parameter simplicity 1.00) --
+diff.x += params.a
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 0.220
+  Demo 1: a = 41.074, b = 2.742
+  Demo 2: a = 4.397, b = 0.303
+
+-- score: -24.01 (accuracy -27.31, token simplicity 1.80, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b * data.x
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = -0.041, c = 0.003
-  Demo 1: a = 2.303, b = 0.655, c = 0.062
-  Demo 2: a = 3.485, b = 0.046, c = 0.022
+  Demo 0: a = 10.292, b = -0.082, c = 0.002
+  Demo 1: a = -6.718, b = 1.451, c = 0.078
+  Demo 2: a = 3.309, b = 0.074, c = 0.023
 
--- score: -59.28 (accuracy -62.78, token simplicity 2.00, parameter simplicity 1.50) --
+-- score: -23.65 (accuracy -27.15, token simplicity 2.00, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b
 diff.x += params.b
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.917, b = -0.174, c = 0.004
-  Demo 1: a = 4.364, b = 2.781, c = 0.051
-  Demo 2: a = 3.500, b = 0.065, c = 0.019
+  Demo 0: a = 10.027, b = -0.354, c = 0.004
+  Demo 1: a = -2.154, b = 6.160, c = 0.052
+  Demo 2: a = 3.333, b = 0.106, c = 0.019
 
--- score: -59.22 (accuracy -62.92, token simplicity 2.20, parameter simplicity 1.50) --
+-- score: -23.61 (accuracy -26.01, token simplicity 1.40, parameter simplicity 1.00) --
+diff.x += params.a
+diff.x += data.x
+diff.x -= params.b * data.x
+  Demo 0: a = 11.781, b = 1.220
+  Demo 1: a = 41.074, b = 3.742
+  Demo 2: a = 4.397, b = 1.303
+
+-- score: -23.61 (accuracy -27.31, token simplicity 2.20, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b * data.x
 diff.x -= data.x
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 10.046, b = 0.959, c = 0.003
-  Demo 1: a = 2.303, b = 1.655, c = 0.062
-  Demo 2: a = 3.485, b = 1.046, c = 0.022
+  Demo 0: a = 10.292, b = 0.918, c = 0.002
+  Demo 1: a = -6.718, b = 2.451, c = 0.078
+  Demo 2: a = 3.309, b = 1.074, c = 0.023
 
--- score: -59.08 (accuracy -62.78, token simplicity 2.20, parameter simplicity 1.50) --
+-- score: -23.45 (accuracy -27.15, token simplicity 2.20, parameter simplicity 1.50) --
 diff.x += params.a
 diff.x += params.b
 diff.x += (params.b + params.c)
 diff.x -= params.c * data.x * data.x
-  Demo 0: a = 9.916, b = -0.175, c = 0.004
-  Demo 1: a = 4.354, b = 2.761, c = 0.051
-  Demo 2: a = 3.496, b = 0.057, c = 0.019
+  Demo 0: a = 10.027, b = -0.356, c = 0.004
+  Demo 1: a = -2.165, b = 6.139, c = 0.052
+  Demo 2: a = 3.329, b = 0.099, c = 0.019
 
--- score: -58.78 (accuracy -62.78, token simplicity 2.00, parameter simplicity 2.00) --
+-- score: -23.15 (accuracy -27.15, token simplicity 2.00, parameter simplicity 2.00) --
 diff.x += params.a
 diff.x += params.b
 diff.x += params.c
 diff.x -= params.d * data.x * data.x
-  Demo 0: a = 9.921, b = -0.165, c = -0.186, d = 0.004
-  Demo 1: a = 4.299, b = 2.650, c = 2.977, d = 0.051
-  Demo 2: a = 3.495, b = 0.056, c = 0.079, d = 0.019
-
--- score: -58.72 (accuracy -62.92, token simplicity 2.20, parameter simplicity 2.00) --
-diff.x += params.a
-diff.x += params.b
-diff.x += params.c * data.x
-diff.x -= params.d * data.x * data.x
-  Demo 0: a = 10.066, b = -0.020, c = -0.041, d = 0.003
-  Demo 1: a = 1.976, b = 0.327, c = 0.655, d = 0.062
-  Demo 2: a = 3.462, b = 0.023, c = 0.046, d = 0.022
-
--- score: -58.52 (accuracy -62.92, token simplicity 2.40, parameter simplicity 2.00) --
-diff.x += params.a
-diff.x += params.b * data.x
-diff.x -= params.c * data.x
-diff.x -= params.d * data.x * data.x
-  Demo 0: a = 10.046, b = -0.039, c = 0.002, d = 0.003
-  Demo 1: a = 2.303, b = 0.686, c = 0.031, d = 0.062
-  Demo 2: a = 3.485, b = 0.057, c = 0.011, d = 0.022
+  Demo 0: a = 10.036, b = -0.338, c = -0.379, d = 0.004
+  Demo 1: a = -2.300, b = 5.869, c = 6.595, d = 0.052
+  Demo 2: a = 3.325, b = 0.091, c = 0.128, d = 0.019
 

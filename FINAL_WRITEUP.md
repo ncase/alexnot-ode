@@ -19,12 +19,12 @@ Score, lower's better: `accuracy * log-error ratio + token * tokens + parameter 
 - Logistic: 20, 20, 20, 0 (60)
 - Bass: 20, 20, 18, 0 (58)
 
-Traces for each level are in `levels/results/`, on 5% noise, seed 0. All 8 of those traces end on the intended program.
+Traces for each level are in `levels/results/`, on 10% noise, seed 0. All 8 of those traces end on the intended program.
 
 ## Real lynx & hare data: 21 samples, 1 demo
 
 - **Main settings fail:** the winner has all 4 Lotka-Volterra terms plus 5 extras, which is overfitting (`levels/results/lynx_hare.md`).
-- **25 / 1 / 0.5 finds the structure:** the winner is `x += a*x | x -= b*x*y | y += b*x*y | y -= y`, and all of the top 6 programs are Lotka-Volterra-shaped. The version with 4 separate numbers comes #6, 2.38 points behind.
+- **25 / 1 / 0.5 finds the structure:** the winner is `x += a*x | x -= b*x*y | y += b*x*y | y -= y`, and all of the top 6 programs are Lotka-Volterra-shaped. The version with 4 separate numbers comes #6, 2.38 points behind (`levels/results/lynx_hare_25_1_0.5.md`).
 - **This is one result, not a success rate:** there's one dataset, and the search has a fixed seed.
 - **This is a spark, not a validation:** the setting was picked on this same data. In a grid search, 56 of 298 settings won with a Lotka-Volterra shape.
 
@@ -53,9 +53,11 @@ Main settings at 20 samples got 266/640, but that run stopped each level at its 
 - Exact form, at 1 / 5 / 10 / 20% noise: 0, 0, 3, 1
 - Right 7 terms & nothing extra, with exact winners included, at 5 / 10 / 20% noise: 8, 9, 2. This wasn't counted at 1%.
 
+The trace (`levels/results/lorenz.md`, 10% noise, seed 0) is one of the near-misses: right 7 terms, but with a fitted number where the truth has a plain 1.
+
 ## Where things are
 
-- `levels/results/`: traces for the main settings. `lorenz.md` is from the same solver code, and wasn't rerun.
+- `levels/results/`: traces for the main settings, plus `lynx_hare_25_1_0.5.md` for the real data at 25 / 1 / 0.5. (`python solver/trace_lynx_sparks.py`)
 - `levels/plots/`, `plots/systems.png`: data plots, with lines at 0.15 opacity, so you can see how sparse the dots are.
 - `21-sample/`: the 21-sample data, scripts & logs. `other_logs/` backs the other numbers here (`run_accuracy.log`'s `ACCURACY 40` block is the 562).
 - `_old.md`: LLM-generated speculation. Don't cite it.

@@ -12,7 +12,7 @@ from search import RoundLog, search_population
 RESULTS_PATH: Path = Path(__file__).parent.parent / 'levels' / 'results'
 RUNNER_UP_COUNT: int = 4
 # Which noisy copy of a level the traces run on. Needs levels/timeseries/fan/ to exist
-TRACE_NOISE_LABEL: str = '05'
+TRACE_NOISE_LABEL: str = '10'
 TRACE_SEED: int = 0
 
 
@@ -48,7 +48,7 @@ def make_trace(level_name: str, population: list[ScoredProgram], round_logs: lis
 
 def run_and_save(level_name: str) -> None:
     """Search one level, save its reasoning trace to levels/results/, and print its winner."""
-    # Levels with made-up data get their 5% noise copy. Real data (lynx_hare) has no copies, and stays as it is
+    # Levels with made-up data get their 10% noise copy. Real data (lynx_hare) has no copies, and stays as it is
     noisy_path: Path = TIMESERIES_PATH / 'fan' / f'{level_name}_noise{TRACE_NOISE_LABEL}_seed{TRACE_SEED:02d}.json'
     level: Level = load_level(noisy_path if noisy_path.exists() else TIMESERIES_PATH / f'{level_name}.json')
     round_logs: list[RoundLog] = []
