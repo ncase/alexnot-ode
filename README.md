@@ -1,9 +1,9 @@
 # AlexNot-ODE
 
-> ⚠️ **This is fully vibe-coded slop.** A toy side-experiment, written almost entirely by an LLM. Don't trust it without checking.
+> ⚠️ **This is fully vibe-coded slop.** A quick proof-of-concept, written almost entirely by Claude Code. 🦀
 
-A tiny spin-off of [AlexNot](https://github.com/ncase/alexnot): the same "search for the simplest program that fits the data" idea,
-but for finding differential equations (ODEs) from sparse, noisy time series, instead of solving ARC puzzles.
+This is a minimalist spin-off of [AlexNot](https://github.com/ncase/alexnot): the same "search for the simplest program that fits the data" idea, but for finding differential equations (ODEs) from sparse, noisy time series, instead of solving ARC puzzles. This was to show that, yes, the idea generalizes, to real-world science. (or at least, this very easy version of science, for now.)
+
 Results are in [`FINAL_WRITEUP.md`](FINAL_WRITEUP.md).
 
 ## Run it locally
