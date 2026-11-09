@@ -12,7 +12,7 @@ Results are in [`FINAL_WRITEUP.md`](FINAL_WRITEUP.md).
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 
-# Make the noisy copies of each level (levels/timeseries/fan/, not in git)
+# Make the noisy copies of each level (levels/timeseries/fan/, not in git; takes about a minute)
 .venv/bin/python levels/generators/generate_fan.py
 
 # Find the equations for one or more levels (or leave the names off for all of them).
