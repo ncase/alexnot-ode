@@ -61,7 +61,6 @@ The trace (`levels/results/lorenz.md`, 10% noise, seed 0) is one of the near-mis
 - `levels/plots/`, `plots/systems.png`: data plots, with lines at 0.15 opacity, so you can see how sparse the dots are.
 - `21-sample/`: the 21-sample data, scripts & logs. `other_logs/` backs the other numbers here (`run_accuracy.log`'s `ACCURACY 40` block is the 562).
 - `21-sample/plots/`: Exponential, Newton, Lotka-Volterra & SIR at 21 samples & 20% noise, seed 0, which 25 / 1 / 0.5 solves on all four.
-- `_old.md`: LLM-generated speculation. Don't cite it.
 
 To rerun the 21-sample tests, from the root: `PYTHONPATH=solver python 21-sample/rank_no_stop.py --levels sir --coeffs 25 1 0.5 --fan-path 21-sample/data/other_levels`
 

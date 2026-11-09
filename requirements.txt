@@ -1,0 +1,6 @@
+# The solver + data generators
+numpy
+scipy
+
+# Plots
+matplotlib
