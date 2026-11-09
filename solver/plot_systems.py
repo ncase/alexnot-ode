@@ -1,4 +1,4 @@
-"""Graph every test system: ground truth vs what the program gets to see. Saves to plots/systems.png."""
+"""Graph every test system: ground truth vs what the program gets to see. Saves to levels/plots/systems.png."""
 from pathlib import Path
 
 import matplotlib
@@ -8,8 +8,8 @@ import numpy as np
 
 from systems import SYSTEMS, System, load_lynx_hare, noisy_samples, simulate
 
-OUTPUT_PATH: Path = Path(__file__).parent.parent / 'plots' / 'systems.png'
-BUTTERFLY_PATH: Path = Path(__file__).parent.parent / 'plots' / 'lorenz_butterfly.png'
+OUTPUT_PATH: Path = Path(__file__).parent.parent / 'levels' / 'plots' / 'systems.png'
+BUTTERFLY_PATH: Path = Path(__file__).parent.parent / 'levels' / 'plots' / 'lorenz_butterfly.png'
 
 # One fixed color per variable: x, y, z
 COLORS: list[str] = ['#2a78d6', '#eb6834', '#1baf7a']

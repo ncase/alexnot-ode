@@ -58,7 +58,7 @@ The trace (`levels/results/lorenz.md`, 10% noise, seed 0) is one of the near-mis
 ## Where things are
 
 - `levels/results/`: traces for the main settings, plus `lynx_hare_25_1_0.5.md` for the real data at 25 / 1 / 0.5. (`python solver/trace_lynx_sparks.py`)
-- `levels/plots/`, `plots/systems.png`: data plots, with lines at 0.15 opacity, so you can see how sparse the dots are.
+- `levels/plots/` (all levels together in `systems.png`): data plots, with lines at 0.15 opacity, so you can see how sparse the dots are.
 - `21-sample/`: the 21-sample data, scripts & logs. `other_logs/` backs the other numbers here (`run_accuracy.log`'s `ACCURACY 40` block is the 562).
 - `21-sample/plots/`: Exponential, Newton, Lotka-Volterra & SIR at 21 samples & 20% noise, seed 0, which 25 / 1 / 0.5 solves on all four.
 
